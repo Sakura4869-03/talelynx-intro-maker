@@ -4567,19 +4567,21 @@ function exportBaseStyle(
 
   const parts = [
 
-    `color:${s.textColor}`,
+  `color:${s.textColor}`,
 
-    `background:${s.backgroundColor}`,
+  `background:${s.backgroundColor}`,
 
-    `border:${s.borderWidth}px solid ${s.borderColor}`,
+  `border:${s.borderWidth}px solid ${s.borderColor}`,
 
-    `border-radius:${s.radius}px`,
+  `border-radius:${s.radius}px`,
 
-    `padding:${s.padding}px`,
+  `padding:${s.padding}px`,
 
-    `text-align:${s.align}`,
+  `margin:0 0 16px 0`,
 
-    `font-size:${s.fontSize}px`
+  `text-align:${s.align}`,
+
+  `font-size:${s.fontSize}px`
 
   ];
 
