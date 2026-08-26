@@ -760,42 +760,6 @@ button {
 
 
 /* =========================================================
-   IMAGE
-========================================================= */
-
-.image-preview {
-  display: grid;
-  place-items: center;
-
-  min-height: 220px;
-
-  border:
-    1px dashed
-    var(--block-border);
-
-  background:
-    rgba(0,0,0,.08);
-
-  color:
-    var(--block-accent);
-
-  font-size: 11px;
-
-  line-height: 1.7;
-
-  text-align: center;
-}
-
-.image-code {
-  margin-top: 6px;
-
-  font-family:
-    Consolas,
-    monospace;
-}
-
-
-/* =========================================================
    NOTICE
 ========================================================= */
 
@@ -919,11 +883,7 @@ button {
   box-shadow:
     0 0
     var(--block-glow-size)
-    color-mix(
-      in srgb,
-      var(--block-glow),
-      transparent 38%
-    );
+    var(--block-glow);
 }
 
 .effect-glow .part-main-title {
@@ -936,18 +896,10 @@ button {
 .effect-neon {
   box-shadow:
     0 0 8px
-    color-mix(
-      in srgb,
-      var(--block-glow),
-      transparent 55%
-    ),
+    var(--block-glow),
     0 0
     var(--block-glow-size)
-    color-mix(
-      in srgb,
-      var(--block-glow),
-      transparent 62%
-    );
+    var(--block-glow);
 }
 
 .effect-neon .part-main-title,
@@ -961,12 +913,8 @@ button {
 
 .effect-glass {
   background:
-    color-mix(
-      in srgb,
-      var(--block-bg),
-      transparent 20%
-    );
-
+    var(--block-bg);
+  opacity: 0.92;
   backdrop-filter:
     blur(12px);
 }
@@ -1621,21 +1569,24 @@ button {
 
 .image-preview {
   position: relative;
-
+  display: grid;
+  place-items: center;
+  width: 100%;
   min-height: 180px;
   height: auto;
-
   overflow: hidden;
-
   border:
     1px dashed
     var(--block-border);
-
   border-radius:
     var(--block-radius);
-
   background:
     rgba(0, 0, 0, .08);
+  color:
+    var(--block-accent);
+  font-size: 11px;
+  line-height: 1.7;
+  text-align: center;
 }
 
 
@@ -1648,9 +1599,9 @@ button {
 
 .image-preview.has-image img {
   display: block;
-
   width: 100%;
   height: 100%;
+  object-position: center;
 }
 
 
@@ -1720,26 +1671,18 @@ button {
 
 .image-code {
   position: absolute;
-
   right: 10px;
   bottom: 8px;
-
   padding: 4px 7px;
-
   border-radius: 4px;
-
   background:
     rgba(0, 0, 0, .55);
-
   color:
     var(--block-accent);
-
   font-family:
     Consolas,
     monospace;
-
   font-size: 8px;
-
   pointer-events: none;
 }
 
