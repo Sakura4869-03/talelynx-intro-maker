@@ -11,12 +11,11 @@
 
   <meta
     name="description"
-    content="Talelynxのチャット紹介欄に貼り付けるHTMLを、プレビューを見ながら作成できるツールです。"
+    content="Talelynxのチャット紹介用HTMLをパーツから作成できるビジュアルビルダー"
   >
 
-  <title>Talelynx Intro Maker</title>
+  <title>Talelynx Parts Builder</title>
 
-  <!-- CSS -->
   <link
     rel="stylesheet"
     href="css/style.css"
@@ -26,603 +25,439 @@
 
 <body>
 
-  <div class="app">
+<div class="app">
 
 
-    <!-- ==================================================
-         LEFT SIDEBAR
-    =================================================== -->
+  <!-- =========================================
+       LEFT
+  ========================================== -->
 
-    <aside class="sidebar">
+  <aside class="left-panel">
 
+    <header class="panel-header">
 
-      <!-- HEADER -->
+      <p class="eyebrow">
+        TALELYNX CREATOR TOOL
+      </p>
 
-      <header class="sidebar-header">
+      <h1>
+        Parts Builder
+      </h1>
 
-        <div class="sidebar-header-top">
+      <p class="panel-description">
+        パーツを組み合わせて、作品紹介HTMLを作成します。
+      </p>
 
-          <div>
+      <div
+        class="save-status"
+        id="saveStatus"
+      >
+        ● 自動保存
+      </div>
 
-            <p class="eyebrow">
-              CREATOR TOOL
-            </p>
-
-            <h1>
-              キャラクターを編集
-            </h1>
-
-          </div>
-
-
-          <div
-            class="save-status"
-            id="saveStatus"
-          >
-            ● 自動保存
-          </div>
-
-        </div>
+    </header>
 
 
-        <!-- EDIT MODE -->
+    <!-- THEME -->
 
-        <div class="mode-switch">
+    <section class="panel-section">
 
-          <button
-            type="button"
-            class="mode-button"
-            id="formEditMode"
-          >
-            項目で編集
-          </button>
+      <div class="section-heading">
+        <span>01</span>
+        テーマ
+      </div>
 
-          <button
-            type="button"
-            class="mode-button active"
-            id="directEditMode"
-          >
-            画面を直接編集
-          </button>
+      <div class="theme-grid">
 
-        </div>
+        <button
+          class="theme-button active"
+          data-theme="cyber"
+          type="button"
+        >
+          <strong>CYBER</strong>
+          <small>ネオン・近未来</small>
+        </button>
 
-      </header>
+        <button
+          class="theme-button"
+          data-theme="romance"
+          type="button"
+        >
+          <strong>ROMANCE</strong>
+          <small>淡色・柔らかめ</small>
+        </button>
+
+        <button
+          class="theme-button"
+          data-theme="noir"
+          type="button"
+        >
+          <strong>NOIR</strong>
+          <small>暗色・重厚</small>
+        </button>
+
+        <button
+          class="theme-button"
+          data-theme="minimal"
+          type="button"
+        >
+          <strong>MINIMAL</strong>
+          <small>白・シンプル</small>
+        </button>
+
+      </div>
+
+    </section>
 
 
-      <!-- ==================================================
-           01 PRESET
-      =================================================== -->
+    <!-- PARTS -->
 
-      <section class="section">
+    <section class="panel-section">
 
-        <div class="section-title">
+      <div class="section-heading">
+        <span>02</span>
+        パーツを追加
+      </div>
 
-          <span class="section-number">
-            01
-          </span>
+      <div class="parts-grid">
+
+        <button
+          type="button"
+          class="part-button"
+          data-add="neonTitle"
+        >
+          <span class="part-icon">T</span>
 
           <span>
-            プリセット
+            <strong>タイトル</strong>
+            <small>Hero / Neon Title</small>
           </span>
-
-        </div>
-
-
-        <div class="presets">
-
-          <button
-            type="button"
-            class="preset active"
-            data-theme="studio"
-          >
-
-            <strong>
-              STUDIO
-            </strong>
-
-            <small>
-              芸能プロフィール風
-            </small>
-
-          </button>
+        </button>
 
 
-          <button
-            type="button"
-            class="preset"
-            data-theme="dossier"
-          >
-
-            <strong>
-              DOSSIER
-            </strong>
-
-            <small>
-              秘密ファイル風
-            </small>
-
-          </button>
-
-
-          <button
-            type="button"
-            class="preset"
-            data-theme="academy"
-          >
-
-            <strong>
-              ACADEMY
-            </strong>
-
-            <small>
-              学園名簿風
-            </small>
-
-          </button>
-
-        </div>
-
-      </section>
-
-
-      <!-- ==================================================
-           02 SELECTED BLOCK
-      =================================================== -->
-
-      <section class="section">
-
-        <div class="section-title">
-
-          <span class="section-number">
-            02
-          </span>
+        <button
+          type="button"
+          class="part-button"
+          data-add="messageBox"
+        >
+          <span class="part-icon">〝</span>
 
           <span>
-            選択中のパーツ
+            <strong>メッセージ</strong>
+            <small>Quote / Message</small>
           </span>
+        </button>
 
-        </div>
 
-
-        <!-- 未選択 -->
-
-        <div
-          class="empty-inspector"
-          id="noSelection"
+        <button
+          type="button"
+          class="part-button"
+          data-add="sectionText"
         >
-
-          <strong>
-            プレビューの文字をタップ！
-          </strong>
-
-          <p>
-            点線が出る場所をクリックすると、
-            ここから色やサイズも変更できます。
-          </p>
-
-        </div>
-
-
-        <!-- 選択中 -->
-
-        <div
-          id="inspector"
-          hidden
-        >
-
-
-          <!-- TEXT -->
-
-          <div class="field">
-
-            <label for="textInput">
-              テキスト
-            </label>
-
-            <textarea
-              id="textInput"
-              placeholder="テキストを入力してください"
-            ></textarea>
-
-          </div>
-
-
-          <!-- TEXT COLOR -->
-
-          <div class="field">
-
-            <label>
-              文字色
-            </label>
-
-
-            <div class="color-row">
-
-              <input
-                type="color"
-                id="colorInput"
-                value="#16131a"
-                aria-label="文字色を選択"
-              >
-
-              <input
-                type="text"
-                id="colorText"
-                value="#16131a"
-                placeholder="#16131a"
-              >
-
-            </div>
-
-          </div>
-
-
-          <!-- BACKGROUND COLOR -->
-
-          <div class="field">
-
-            <label>
-              背景色
-            </label>
-
-
-            <div class="color-row">
-
-              <input
-                type="color"
-                id="bgInput"
-                value="#f8f4ed"
-                aria-label="背景色を選択"
-              >
-
-              <input
-                type="text"
-                id="bgText"
-                value="#f8f4ed"
-                placeholder="#f8f4ed"
-              >
-
-            </div>
-
-          </div>
-
-
-          <!-- FONT SIZE -->
-
-          <div class="field">
-
-            <div class="field-label-row">
-
-              <label for="sizeInput">
-                文字サイズ
-              </label>
-
-              <span class="field-value">
-
-                <span id="sizeValue">
-                  16
-                </span>
-
-                px
-
-              </span>
-
-            </div>
-
-
-            <input
-              type="range"
-              id="sizeInput"
-              min="10"
-              max="72"
-              step="1"
-              value="16"
-            >
-
-          </div>
-
-
-          <!-- ALIGN -->
-
-          <div class="field">
-
-            <label for="alignInput">
-              文字揃え
-            </label>
-
-
-            <select id="alignInput">
-
-              <option value="left">
-                左揃え
-              </option>
-
-              <option value="center">
-                中央揃え
-              </option>
-
-              <option value="right">
-                右揃え
-              </option>
-
-            </select>
-
-          </div>
-
-
-          <!-- PADDING -->
-
-          <div class="field">
-
-            <div class="field-label-row">
-
-              <label for="paddingInput">
-                内側余白
-              </label>
-
-              <span class="field-value">
-
-                <span id="paddingValue">
-                  20
-                </span>
-
-                px
-
-              </span>
-
-            </div>
-
-
-            <input
-              type="range"
-              id="paddingInput"
-              min="0"
-              max="60"
-              step="1"
-              value="20"
-            >
-
-          </div>
-
-
-          <!-- BLOCK ACTIONS -->
-
-          <div class="actions">
-
-            <button
-              type="button"
-              id="moveUp"
-            >
-              ↑ 上へ
-            </button>
-
-
-            <button
-              type="button"
-              id="moveDown"
-            >
-              ↓ 下へ
-            </button>
-
-
-            <button
-              type="button"
-              id="duplicate"
-            >
-              複製
-            </button>
-
-
-            <button
-              type="button"
-              id="deleteBlock"
-              class="delete"
-            >
-              削除
-            </button>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- ==================================================
-           03 ADD PARTS
-      =================================================== -->
-
-      <section class="section">
-
-        <div class="section-title">
-
-          <span class="section-number">
-            03
-          </span>
+          <span class="part-icon">¶</span>
 
           <span>
-            パーツを追加
+            <strong>セクション</strong>
+            <small>Heading + Text</small>
           </span>
-
-        </div>
-
-
-        <div class="add-buttons">
-
-          <button
-            type="button"
-            data-add="heading"
-          >
-            <span class="add-icon">
-              T
-            </span>
-
-            <span>
-              タイトル
-            </span>
-          </button>
+        </button>
 
 
-          <button
-            type="button"
-            data-add="text"
-          >
-            <span class="add-icon">
-              ¶
-            </span>
-
-            <span>
-              テキスト
-            </span>
-          </button>
-
-
-          <button
-            type="button"
-            data-add="image"
-          >
-            <span class="add-icon">
-              ▧
-            </span>
-
-            <span>
-              画像
-            </span>
-          </button>
-
-
-          <button
-            type="button"
-            data-add="profile"
-          >
-            <span class="add-icon">
-              ☷
-            </span>
-
-            <span>
-              プロフィール
-            </span>
-          </button>
-
-        </div>
-
-      </section>
-
-
-      <!-- ==================================================
-           GUIDE
-      =================================================== -->
-
-      <section class="section">
-
-        <div class="sidebar-note">
-
-          <strong>
-            Talelynx画像について
-          </strong>
-
-          <p>
-            画像パーツの画像名に
-            <code>main</code>
-            と入力すると、
-            出力HTMLには
-            <code>{{img:main}}</code>
-            として反映されます。
-          </p>
-
-        </div>
-
-      </section>
-
-
-    </aside>
-
-
-    <!-- ==================================================
-         CENTER WORKSPACE
-    =================================================== -->
-
-    <main class="workspace">
-
-
-      <!-- WORKSPACE HEADER -->
-
-      <header class="workspace-header">
-
-        <div>
-
-          <p class="workspace-title">
-            EDIT CANVAS
-          </p>
-
-          <strong>
-            Talelynx表示イメージ
-          </strong>
-
-        </div>
-
-
-        <div class="workspace-width">
-          390px
-        </div>
-
-      </header>
-
-
-      <!-- PHONE / CARD -->
-
-      <div class="canvas-shell">
-
-
-        <div
-          class="canvas"
-          id="canvas"
+        <button
+          type="button"
+          class="part-button"
+          data-add="card"
         >
+          <span class="part-icon">▤</span>
 
-          <!--
-            JavaScriptで
-            ブロックがここに生成されます。
-          -->
+          <span>
+            <strong>カード</strong>
+            <small>Information Card</small>
+          </span>
+        </button>
 
-        </div>
 
+        <button
+          type="button"
+          class="part-button"
+          data-add="image"
+        >
+          <span class="part-icon">▧</span>
+
+          <span>
+            <strong>画像</strong>
+            <small>Talelynx Image</small>
+          </span>
+        </button>
+
+
+        <button
+          type="button"
+          class="part-button"
+          data-add="notice"
+        >
+          <span class="part-icon">!</span>
+
+          <span>
+            <strong>注意書き</strong>
+            <small>Notice Box</small>
+          </span>
+        </button>
+
+
+        <button
+          type="button"
+          class="part-button"
+          data-add="tags"
+        >
+          <span class="part-icon">#</span>
+
+          <span>
+            <strong>タグ</strong>
+            <small>Tag List</small>
+          </span>
+        </button>
+
+
+        <button
+          type="button"
+          class="part-button"
+          data-add="divider"
+        >
+          <span class="part-icon">―</span>
+
+          <span>
+            <strong>区切り</strong>
+            <small>Divider</small>
+          </span>
+        </button>
+
+
+        <button
+          type="button"
+          class="part-button"
+          data-add="button"
+        >
+          <span class="part-icon">→</span>
+
+          <span>
+            <strong>CTA</strong>
+            <small>Button Style</small>
+          </span>
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- DATA -->
+
+    <section class="panel-section">
+
+      <div class="section-heading">
+        <span>03</span>
+        データ
+      </div>
+
+      <button
+        id="resetButton"
+        class="secondary-button danger-button"
+        type="button"
+      >
+        初期状態に戻す
+      </button>
+
+    </section>
+
+
+    <div class="side-note">
+
+      <strong>
+        アニメーションについて
+      </strong>
+
+      <p>
+        Fade・Slide・Pulse・Flickerなどの動きは
+        編集画面のプレビュー専用です。
+        TalelynxへコピーするHTMLには静的な見た目だけを書き出します。
+      </p>
+
+    </div>
+
+  </aside>
+
+
+  <!-- =========================================
+       CENTER
+  ========================================== -->
+
+  <main class="workspace">
+
+    <header class="workspace-header">
+
+      <div>
+
+        <p class="eyebrow">
+          VISUAL BUILDER
+        </p>
+
+        <h2>
+          編集キャンバス
+        </h2>
 
       </div>
 
 
-      <!-- HELP -->
+      <div class="workspace-actions">
 
-      <div class="canvas-help">
+        <button
+          id="editModeButton"
+          class="workspace-button active"
+          type="button"
+        >
+          編集表示
+        </button>
 
-        <span>
-          クリック
-        </span>
+        <button
+          id="previewModeButton"
+          class="workspace-button"
+          type="button"
+        >
+          プレビュー
+        </button>
 
-        テキスト・パーツを選択
+        <button
+          id="replayButton"
+          class="workspace-button"
+          type="button"
+        >
+          ▶ 再生
+        </button>
 
-        <span>
-          編集
-        </span>
+      </div>
 
-        その場で文字を変更
+    </header>
+
+
+    <div class="canvas-device">
+
+      <div
+        id="canvas"
+        class="canvas"
+      ></div>
+
+    </div>
+
+
+    <div class="workspace-help">
+
+      <span>クリック</span>
+      パーツ選択
+
+      <span>文字クリック</span>
+      直接編集
+
+      <span>⠿</span>
+      ドラッグ並び替え
+
+    </div>
+
+  </main>
+
+
+  <!-- =========================================
+       RIGHT
+  ========================================== -->
+
+  <aside class="right-panel">
+
+
+    <!-- INSPECTOR -->
+
+    <section class="inspector-section">
+
+      <div class="inspector-header">
+
+        <p class="eyebrow">
+          INSPECTOR
+        </p>
+
+        <h2>
+          パーツ設定
+        </h2>
 
       </div>
 
 
-    </main>
+      <div
+        id="inspectorEmpty"
+        class="inspector-empty"
+      >
+
+        <strong>
+          パーツを選択してください
+        </strong>
+
+        <p>
+          キャンバス内のパーツをクリックすると、
+          色・文字・エフェクトなどを変更できます。
+        </p>
+
+      </div>
 
 
-    <!-- ==================================================
-         RIGHT OUTPUT PANEL
-    =================================================== -->
+      <div
+        id="inspector"
+        hidden
+      >
 
-    <aside class="output-panel">
+        <div id="inspectorFields"></div>
 
 
-      <!-- OUTPUT HEADER -->
+        <div class="inspector-actions">
 
-      <header class="output-header">
+          <button
+            type="button"
+            data-block-action="moveUp"
+          >
+            ↑ 上へ
+          </button>
+
+          <button
+            type="button"
+            data-block-action="moveDown"
+          >
+            ↓ 下へ
+          </button>
+
+          <button
+            type="button"
+            data-block-action="duplicate"
+          >
+            複製
+          </button>
+
+          <button
+            type="button"
+            class="danger-button"
+            data-block-action="delete"
+          >
+            削除
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- OUTPUT -->
+
+    <section class="output-section">
+
+      <div class="output-header">
 
         <div>
 
@@ -631,56 +466,30 @@
           </p>
 
           <h2>
-            Talelynx用チャット紹介HTML
+            Talelynx用HTML
           </h2>
 
         </div>
 
-      </header>
-
-
-      <!-- INFO -->
-
-      <div class="output-info">
-
-        <strong>
-          貼り付け先
-        </strong>
-
-        <p>
-          Talelynxの「チャット紹介」欄に
-          そのまま貼り付けできます。
-        </p>
-
       </div>
 
 
-      <!-- HTML OUTPUT -->
+      <textarea
+        id="htmlOutput"
+        class="html-output"
+        readonly
+        spellcheck="false"
+      ></textarea>
 
-      <div class="output-code-wrapper">
-
-        <textarea
-          id="htmlOutput"
-          class="code"
-          readonly
-          spellcheck="false"
-          aria-label="生成されたTalelynx用HTML"
-        ></textarea>
-
-      </div>
-
-
-      <!-- CHARACTER COUNTER -->
 
       <div
-        class="counter"
         id="counter"
+        class="counter"
       >
 
         <span id="charCount">
           0 / 10,000
         </span>
-
 
         <span id="remaining">
           残り10,000文字
@@ -689,60 +498,32 @@
       </div>
 
 
-      <!-- PROGRESS -->
-
-      <div class="character-progress">
+      <div class="progress">
 
         <div
-          class="character-progress-bar"
-          id="characterProgressBar"
+          id="progressBar"
+          class="progress-bar"
         ></div>
 
       </div>
 
 
-      <!-- COPY -->
-
       <button
-        type="button"
-        class="copy-btn"
         id="copyButton"
+        class="copy-button"
+        type="button"
       >
         HTMLをコピー
       </button>
 
+    </section>
 
-      <!-- RESET / DATA -->
+  </aside>
 
-      <div class="output-sub-actions">
-
-        <button
-          type="button"
-          id="resetButton"
-        >
-          初期状態に戻す
-        </button>
-
-      </div>
+</div>
 
 
-      <p class="output-footnote">
-        編集内容はこのブラウザ内に自動保存されます。
-      </p>
-
-
-    </aside>
-
-
-  </div>
-
-
-  <!-- ==================================================
-       SCRIPT
-  =================================================== -->
-
-  <script src="js/app.js"></script>
+<script src="js/app.js"></script>
 
 </body>
-
 </html>
