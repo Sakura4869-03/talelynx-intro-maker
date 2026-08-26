@@ -1737,36 +1737,32 @@ button {
 
 .profile-grid {
   display: grid;
-
+  grid-template-columns:
+    repeat(6, minmax(0, 1fr));
   gap: 10px;
-
   margin-top: 12px;
-
   text-align: left;
 }
 
 
-.profile-cols-1 {
-  grid-template-columns:
-    1fr;
+.profile-width-third {
+  grid-column:
+    span 2;
 }
 
-
-.profile-cols-2 {
-  grid-template-columns:
-    repeat(
-      2,
-      minmax(0, 1fr)
-    );
+.profile-width-half {
+  grid-column:
+    span 3;
 }
 
+.profile-width-twoThirds {
+  grid-column:
+    span 4;
+}
 
-.profile-cols-3 {
-  grid-template-columns:
-    repeat(
-      3,
-      minmax(0, 1fr)
-    );
+.profile-width-full {
+  grid-column:
+    1 / -1;
 }
 
 
@@ -2032,21 +2028,58 @@ button {
 
 .profile-editor-row {
   display: grid;
-
   grid-template-columns:
-    90px 1fr;
-
-  gap: 5px 6px;
-
-  padding: 8px;
-
+    1fr;
+  gap: 8px;
+  padding: 10px;
   border:
     1px solid
     #ded6cf;
-
   border-radius: 7px;
+  background: #fff;
+}
+
+.profile-editor-field {
+  display: grid;
+
+  grid-template-columns:
+    58px 1fr;
+
+  align-items: center;
+
+  gap: 7px;
+}
+
+.profile-editor-label {
+  color: #827983;
+
+  font-size: 7px;
+
+  font-weight: 700;
+}
+
+.profile-editor-field input,
+.profile-editor-field select {
+  width: 100%;
+
+  min-width: 0;
+}
+
+.profile-width-field select {
+  height: 31px;
+
+  padding:
+    0 7px;
+
+  border:
+    1px solid
+    #d9d1ca;
+
+  border-radius: 5px;
 
   background: #fff;
+
+  font-size: 8px;
 }
 
 
