@@ -4615,7 +4615,6 @@ function exportBaseStyle(
 
 function exportProfileHTML(
   fields,
-  columns,
   style
 ) {
 
@@ -4634,30 +4633,47 @@ function exportProfileHTML(
   }
 
 
-  let width =
-    "100%";
-
-
-  if (
-    columns === 2
-  ) {
-    width = "48%";
-  }
-
-
-  if (
-    columns === 3
-  ) {
-    width = "31%";
-  }
-
-
   return enabled
 
     .map(
-      field =>
-        `
-<div style="display:inline-block;width:${width};vertical-align:top;margin:0 1% 12px 0;">
+      field => {
+
+        let width =
+          "100%";
+
+
+        switch (
+          field.width
+        ) {
+
+          case "third":
+            width = "31%";
+            break;
+
+          case "half":
+            width = "48%";
+            break;
+
+          case "twoThirds":
+            width = "64%";
+            break;
+
+          case "full":
+          default:
+            width = "100%";
+            break;
+
+        }
+
+
+        const marginRight =
+          width === "100%"
+            ? "0"
+            : "1%";
+
+
+        return `
+<div style="display:inline-block;width:${width};vertical-align:top;margin:0 ${marginRight} 12px 0;">
   <div style="color:${style.accentColor};font-size:9px;letter-spacing:.12em;">
     ${escapeHTML(field.label)}
   </div>
@@ -4665,7 +4681,9 @@ function exportProfileHTML(
     ${lineBreaks(field.value)}
   </div>
 </div>
-        `.trim()
+        `.trim();
+
+      }
     )
 
     .join("");
@@ -4797,10 +4815,6 @@ function exportBlockHTML(
           <div style="margin-top:16px;">
             ${exportProfileHTML(
               c.profileFields,
-              Number(
-                c.profileColumns
-              ) ||
-              2,
               s
             )}
           </div>
@@ -4821,14 +4835,10 @@ function exportBlockHTML(
     ${escapeHTML(c.heading)}
   </div>
 
-  ${exportProfileHTML(
-    c.fields,
-    Number(
-      c.columns
-    ) ||
-    2,
-    s
-  )}
+    ${exportProfileHTML(
+      c.fields,
+      s
+    )}
 
 </div>
       `.trim();
