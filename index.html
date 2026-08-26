@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Talelynxのチャット紹介欄に貼り付けるHTMLを、プレビューを見ながら作成できるツールです。"
+  >
+
+  <title>Talelynx Intro Maker</title>
+
+  <!-- CSS -->
+  <link
+    rel="stylesheet"
+    href="css/style.css"
+  >
+</head>
+
+
+<body>
+
+  <div class="app">
+
+
+    <!-- ==================================================
+         LEFT SIDEBAR
+    =================================================== -->
+
+    <aside class="sidebar">
+
+
+      <!-- HEADER -->
+
+      <header class="sidebar-header">
+
+        <div class="sidebar-header-top">
+
+          <div>
+
+            <p class="eyebrow">
+              CREATOR TOOL
+            </p>
+
+            <h1>
+              キャラクターを編集
+            </h1>
+
+          </div>
+
+
+          <div
+            class="save-status"
+            id="saveStatus"
+          >
+            ● 自動保存
+          </div>
+
+        </div>
+
+
+        <!-- EDIT MODE -->
+
+        <div class="mode-switch">
+
+          <button
+            type="button"
+            class="mode-button"
+            id="formEditMode"
+          >
+            項目で編集
+          </button>
+
+          <button
+            type="button"
+            class="mode-button active"
+            id="directEditMode"
+          >
+            画面を直接編集
+          </button>
+
+        </div>
+
+      </header>
+
+
+      <!-- ==================================================
+           01 PRESET
+      =================================================== -->
+
+      <section class="section">
+
+        <div class="section-title">
+
+          <span class="section-number">
+            01
+          </span>
+
+          <span>
+            プリセット
+          </span>
+
+        </div>
+
+
+        <div class="presets">
+
+          <button
+            type="button"
+            class="preset active"
+            data-theme="studio"
+          >
+
+            <strong>
+              STUDIO
+            </strong>
+
+            <small>
+              芸能プロフィール風
+            </small>
+
+          </button>
+
+
+          <button
+            type="button"
+            class="preset"
+            data-theme="dossier"
+          >
+
+            <strong>
+              DOSSIER
+            </strong>
+
+            <small>
+              秘密ファイル風
+            </small>
+
+          </button>
+
+
+          <button
+            type="button"
+            class="preset"
+            data-theme="academy"
+          >
+
+            <strong>
+              ACADEMY
+            </strong>
+
+            <small>
+              学園名簿風
+            </small>
+
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- ==================================================
+           02 SELECTED BLOCK
+      =================================================== -->
+
+      <section class="section">
+
+        <div class="section-title">
+
+          <span class="section-number">
+            02
+          </span>
+
+          <span>
+            選択中のパーツ
+          </span>
+
+        </div>
+
+
+        <!-- 未選択 -->
+
+        <div
+          class="empty-inspector"
+          id="noSelection"
+        >
+
+          <strong>
+            プレビューの文字をタップ！
+          </strong>
+
+          <p>
+            点線が出る場所をクリックすると、
+            ここから色やサイズも変更できます。
+          </p>
+
+        </div>
+
+
+        <!-- 選択中 -->
+
+        <div
+          id="inspector"
+          hidden
+        >
+
+
+          <!-- TEXT -->
+
+          <div class="field">
+
+            <label for="textInput">
+              テキスト
+            </label>
+
+            <textarea
+              id="textInput"
+              placeholder="テキストを入力してください"
+            ></textarea>
+
+          </div>
+
+
+          <!-- TEXT COLOR -->
+
+          <div class="field">
+
+            <label>
+              文字色
+            </label>
+
+
+            <div class="color-row">
+
+              <input
+                type="color"
+                id="colorInput"
+                value="#16131a"
+                aria-label="文字色を選択"
+              >
+
+              <input
+                type="text"
+                id="colorText"
+                value="#16131a"
+                placeholder="#16131a"
+              >
+
+            </div>
+
+          </div>
+
+
+          <!-- BACKGROUND COLOR -->
+
+          <div class="field">
+
+            <label>
+              背景色
+            </label>
+
+
+            <div class="color-row">
+
+              <input
+                type="color"
+                id="bgInput"
+                value="#f8f4ed"
+                aria-label="背景色を選択"
+              >
+
+              <input
+                type="text"
+                id="bgText"
+                value="#f8f4ed"
+                placeholder="#f8f4ed"
+              >
+
+            </div>
+
+          </div>
+
+
+          <!-- FONT SIZE -->
+
+          <div class="field">
+
+            <div class="field-label-row">
+
+              <label for="sizeInput">
+                文字サイズ
+              </label>
+
+              <span class="field-value">
+
+                <span id="sizeValue">
+                  16
+                </span>
+
+                px
+
+              </span>
+
+            </div>
+
+
+            <input
+              type="range"
+              id="sizeInput"
+              min="10"
+              max="72"
+              step="1"
+              value="16"
+            >
+
+          </div>
+
+
+          <!-- ALIGN -->
+
+          <div class="field">
+
+            <label for="alignInput">
+              文字揃え
+            </label>
+
+
+            <select id="alignInput">
+
+              <option value="left">
+                左揃え
+              </option>
+
+              <option value="center">
+                中央揃え
+              </option>
+
+              <option value="right">
+                右揃え
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- PADDING -->
+
+          <div class="field">
+
+            <div class="field-label-row">
+
+              <label for="paddingInput">
+                内側余白
+              </label>
+
+              <span class="field-value">
+
+                <span id="paddingValue">
+                  20
+                </span>
+
+                px
+
+              </span>
+
+            </div>
+
+
+            <input
+              type="range"
+              id="paddingInput"
+              min="0"
+              max="60"
+              step="1"
+              value="20"
+            >
+
+          </div>
+
+
+          <!-- BLOCK ACTIONS -->
+
+          <div class="actions">
+
+            <button
+              type="button"
+              id="moveUp"
+            >
+              ↑ 上へ
+            </button>
+
+
+            <button
+              type="button"
+              id="moveDown"
+            >
+              ↓ 下へ
+            </button>
+
+
+            <button
+              type="button"
+              id="duplicate"
+            >
+              複製
+            </button>
+
+
+            <button
+              type="button"
+              id="deleteBlock"
+              class="delete"
+            >
+              削除
+            </button>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ==================================================
+           03 ADD PARTS
+      =================================================== -->
+
+      <section class="section">
+
+        <div class="section-title">
+
+          <span class="section-number">
+            03
+          </span>
+
+          <span>
+            パーツを追加
+          </span>
+
+        </div>
+
+
+        <div class="add-buttons">
+
+          <button
+            type="button"
+            data-add="heading"
+          >
+            <span class="add-icon">
+              T
+            </span>
+
+            <span>
+              タイトル
+            </span>
+          </button>
+
+
+          <button
+            type="button"
+            data-add="text"
+          >
+            <span class="add-icon">
+              ¶
+            </span>
+
+            <span>
+              テキスト
+            </span>
+          </button>
+
+
+          <button
+            type="button"
+            data-add="image"
+          >
+            <span class="add-icon">
+              ▧
+            </span>
+
+            <span>
+              画像
+            </span>
+          </button>
+
+
+          <button
+            type="button"
+            data-add="profile"
+          >
+            <span class="add-icon">
+              ☷
+            </span>
+
+            <span>
+              プロフィール
+            </span>
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- ==================================================
+           GUIDE
+      =================================================== -->
+
+      <section class="section">
+
+        <div class="sidebar-note">
+
+          <strong>
+            Talelynx画像について
+          </strong>
+
+          <p>
+            画像パーツの画像名に
+            <code>main</code>
+            と入力すると、
+            出力HTMLには
+            <code>{{img:main}}</code>
+            として反映されます。
+          </p>
+
+        </div>
+
+      </section>
+
+
+    </aside>
+
+
+    <!-- ==================================================
+         CENTER WORKSPACE
+    =================================================== -->
+
+    <main class="workspace">
+
+
+      <!-- WORKSPACE HEADER -->
+
+      <header class="workspace-header">
+
+        <div>
+
+          <p class="workspace-title">
+            EDIT CANVAS
+          </p>
+
+          <strong>
+            Talelynx表示イメージ
+          </strong>
+
+        </div>
+
+
+        <div class="workspace-width">
+          390px
+        </div>
+
+      </header>
+
+
+      <!-- PHONE / CARD -->
+
+      <div class="canvas-shell">
+
+
+        <div
+          class="canvas"
+          id="canvas"
+        >
+
+          <!--
+            JavaScriptで
+            ブロックがここに生成されます。
+          -->
+
+        </div>
+
+
+      </div>
+
+
+      <!-- HELP -->
+
+      <div class="canvas-help">
+
+        <span>
+          クリック
+        </span>
+
+        テキスト・パーツを選択
+
+        <span>
+          編集
+        </span>
+
+        その場で文字を変更
+
+      </div>
+
+
+    </main>
+
+
+    <!-- ==================================================
+         RIGHT OUTPUT PANEL
+    =================================================== -->
+
+    <aside class="output-panel">
+
+
+      <!-- OUTPUT HEADER -->
+
+      <header class="output-header">
+
+        <div>
+
+          <p class="eyebrow">
+            READY TO PASTE
+          </p>
+
+          <h2>
+            Talelynx用チャット紹介HTML
+          </h2>
+
+        </div>
+
+      </header>
+
+
+      <!-- INFO -->
+
+      <div class="output-info">
+
+        <strong>
+          貼り付け先
+        </strong>
+
+        <p>
+          Talelynxの「チャット紹介」欄に
+          そのまま貼り付けできます。
+        </p>
+
+      </div>
+
+
+      <!-- HTML OUTPUT -->
+
+      <div class="output-code-wrapper">
+
+        <textarea
+          id="htmlOutput"
+          class="code"
+          readonly
+          spellcheck="false"
+          aria-label="生成されたTalelynx用HTML"
+        ></textarea>
+
+      </div>
+
+
+      <!-- CHARACTER COUNTER -->
+
+      <div
+        class="counter"
+        id="counter"
+      >
+
+        <span id="charCount">
+          0 / 10,000
+        </span>
+
+
+        <span id="remaining">
+          残り10,000文字
+        </span>
+
+      </div>
+
+
+      <!-- PROGRESS -->
+
+      <div class="character-progress">
+
+        <div
+          class="character-progress-bar"
+          id="characterProgressBar"
+        ></div>
+
+      </div>
+
+
+      <!-- COPY -->
+
+      <button
+        type="button"
+        class="copy-btn"
+        id="copyButton"
+      >
+        HTMLをコピー
+      </button>
+
+
+      <!-- RESET / DATA -->
+
+      <div class="output-sub-actions">
+
+        <button
+          type="button"
+          id="resetButton"
+        >
+          初期状態に戻す
+        </button>
+
+      </div>
+
+
+      <p class="output-footnote">
+        編集内容はこのブラウザ内に自動保存されます。
+      </p>
+
+
+    </aside>
+
+
+  </div>
+
+
+  <!-- ==================================================
+       SCRIPT
+  =================================================== -->
+
+  <script src="js/app.js"></script>
+
+</body>
+
+</html>
