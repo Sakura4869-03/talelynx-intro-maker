@@ -1384,28 +1384,19 @@ button {
 .html-output {
   width: 100%;
   min-height: 300px;
-
   margin-top: 13px;
-
   padding: 12px;
-
   resize: vertical;
-
   border: 0;
   border-radius: 8px;
-
   outline: none;
-
   background:
     #211e23;
-
   color:
     #f3edf5;
-
   font-family:
     Consolas,
     monospace;
-
   font-size: 8px;
   line-height: 1.7;
 }
@@ -1559,17 +1550,33 @@ button {
   .left-panel,
   .right-panel {
     position: relative;
-
     width: 100%;
     height: auto;
-
     padding:
       20px 14px
       36px;
-
     border-left: 0;
     border-right: 0;
   }
+
+
+  /* PC・タブレット時の浮遊パネル設定を解除 */
+  .right-panel {
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+.html-output {
+  min-height: 220px;
+  max-height: 260px;
+  font-size: 7px;
+}
 
 
   /* =========================================
