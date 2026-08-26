@@ -267,65 +267,74 @@ const PROFILE_TEMPLATE = [
 
   {
     id: "name",
-    label: "NAME",
+    label: "名前",
     value: "名前を入力",
-    enabled: true
+    enabled: true,
+    width: "full"
   },
 
   {
     id: "alias",
-    label: "ALIAS",
+    label: "呼び名",
     value: "呼び名を入力",
-    enabled: false
+    enabled: false,
+    width: "half"
   },
 
   {
     id: "age",
-    label: "AGE",
+    label: "年齢",
     value: "年齢を入力",
-    enabled: true
+    enabled: true,
+    width: "half"
   },
 
   {
     id: "height",
-    label: "HEIGHT",
+    label: "身長",
     value: "身長を入力",
-    enabled: true
+    enabled: true,
+    width: "half"
   },
 
   {
     id: "birthday",
-    label: "BIRTHDAY",
+    label: "誕生日",
     value: "誕生日を入力",
-    enabled: false
+    enabled: false,
+    width: "half"
   },
 
   {
     id: "occupation",
-    label: "JOB",
+    label: "職業",
     value: "職業を入力",
-    enabled: true
+    enabled: true,
+    width: "full"
   },
 
   {
     id: "affiliation",
-    label: "AFFILIATION",
+    label: "所属",
     value: "所属を入力",
-    enabled: false
+    enabled: false,
+    width: "half"
   },
 
   {
     id: "relationship",
-    label: "RELATIONSHIP",
+    label: "関係性",
     value: "関係性を入力",
-    enabled: false
+    enabled: false,
+    width: "half"
   },
 
   {
     id: "description",
-    label: "PROFILE",
+    label: "プロフィール",
     value: "プロフィール文を入力",
-    enabled: false
+    enabled: false,
+    width: "full"
   }
 
 ];
@@ -1424,7 +1433,6 @@ function animationClass(
 
 function profileMarkup(
   fields,
-  columns = 2,
   source = "self"
 ) {
 
@@ -1436,9 +1444,7 @@ function profileMarkup(
       );
 
 
-  if (
-    !enabled.length
-  ) {
+  if (!enabled.length) {
 
     return `
       <div class="profile-empty">
@@ -1450,18 +1456,23 @@ function profileMarkup(
 
 
   return `
-    <div
-      class="
-        profile-grid
-        profile-cols-${columns}
-      "
-    >
+    <div class="profile-grid">
 
       ${enabled
         .map(
-          field =>
-            `
-              <div class="profile-cell">
+          field => {
+
+            const width =
+              field.width ||
+              "full";
+
+            return `
+              <div
+                class="
+                  profile-cell
+                  profile-width-${width}
+                "
+              >
 
                 <div class="profile-label">
                   ${escapeHTML(field.label)}
@@ -1476,7 +1487,9 @@ function profileMarkup(
                 </div>
 
               </div>
-            `
+            `;
+
+          }
         )
         .join("")}
 
@@ -1582,7 +1595,6 @@ function imageMarkup(block) {
 
             ${profileMarkup(
               c.profileFields,
-              c.profileColumns,
               "embedded"
             )}
 
@@ -1770,7 +1782,6 @@ function blockContentMarkup(
 
           ${profileMarkup(
             c.fields,
-            c.columns,
             "self"
           )}
 
@@ -2171,33 +2182,51 @@ function renderCanvas() {
         );
 
 
-  if (
-    state.uiMode ===
-    "edit"
-  ) {
+if (
+  state.uiMode ===
+  "edit"
+) {
 
-    canvas
-      .querySelectorAll(
-        `
-          [data-edit-field],
-          [data-profile-field]
-        `
-      )
-      .forEach(
-        element => {
+  canvas
+    .querySelectorAll(
+      `
+        [data-edit-field],
+        [data-profile-field]
+      `
+    )
+    .forEach(
+      element => {
 
-          element
-            .contentEditable =
-            "true";
+        /*
+         * トグルタイトルは
+         * クリック = 開閉に使うため
+         * 直接編集させない
+         */
+        if (
+          element.closest(
+            "summary"
+          )
+        ) {
 
+          element.contentEditable =
+            "false";
 
           element.spellcheck =
             false;
 
-        }
-      );
+          return;
 
-  }
+        }
+        element.contentEditable =
+          "true";
+
+        element.spellcheck =
+          false;
+
+      }
+    );
+
+}
 
 }
 
@@ -2211,8 +2240,21 @@ function selectBlock(id) {
   selectedId =
     id;
 
+  canvas
+    .querySelectorAll(
+      "[data-block-id]"
+    )
+    .forEach(
+      element => {
 
-  renderCanvas();
+        element.classList.toggle(
+          "selected",
+          element.dataset.blockId === id
+        );
+
+      }
+    );
+
 
   renderInspector();
 
@@ -2376,6 +2418,66 @@ canvas.addEventListener(
 
   }
 );
+
+
+/* =========================================================
+   TOGGLE OPEN / CLOSE
+========================================================= */
+
+canvas.addEventListener(
+  "toggle",
+  event => {
+
+    const details =
+      event.target.closest(
+        ".toggle-preview"
+      );
+
+
+    if (!details) {
+      return;
+    }
+
+
+    const blockElement =
+      details.closest(
+        "[data-block-id]"
+      );
+
+
+    if (!blockElement) {
+      return;
+    }
+
+
+    const block =
+      findBlockLocation(
+        blockElement.dataset.blockId
+      )?.block;
+
+
+    if (
+      !block ||
+      block.type !== "toggle"
+    ) {
+      return;
+    }
+
+
+    /*
+     * 実際のdetailsの開閉状態を
+     * データ側にも同期
+     */
+    block.content.defaultOpen =
+      details.open;
+
+
+    scheduleSave();
+
+  },
+  true
+);
+
 
 
 /* =========================================================
@@ -3253,65 +3355,15 @@ function rangeContentFieldHTML(
 
 function profileEditorHTML(
   fields,
-  source,
-  columns
+  source
 ) {
 
   return `
     <div class="inspector-group">
 
       <div class="inspector-group-title">
-        PROFILE ITEMS
+        プロフィール項目
       </div>
-
-
-      <div class="inspector-field">
-
-        <label>
-          列数
-        </label>
-
-        <select
-          data-profile-columns="${source}"
-        >
-
-          <option
-            value="1"
-            ${
-              columns === 1
-                ? "selected"
-                : ""
-            }
-          >
-            1列
-          </option>
-
-          <option
-            value="2"
-            ${
-              columns === 2
-                ? "selected"
-                : ""
-            }
-          >
-            2列
-          </option>
-
-          <option
-            value="3"
-            ${
-              columns === 3
-                ? "selected"
-                : ""
-            }
-          >
-            3列
-          </option>
-
-        </select>
-
-      </div>
-
 
       <div class="profile-editor-list">
 
@@ -3342,24 +3394,102 @@ function profileEditorHTML(
                   </label>
 
 
-                  <input
-                    type="text"
-                    value="${escapeHTML(field.label)}"
-                    data-profile-source="${source}"
-                    data-profile-id="${field.id}"
-                    data-profile-prop="label"
-                    aria-label="項目名"
-                  >
+                  <div class="profile-editor-field">
+
+                    <span class="profile-editor-label">
+                      項目名
+                    </span>
+
+                    <input
+                      type="text"
+                      value="${escapeHTML(field.label)}"
+                      data-profile-source="${source}"
+                      data-profile-id="${field.id}"
+                      data-profile-prop="label"
+                      aria-label="項目名"
+                    >
+
+                  </div>
 
 
-                  <input
-                    type="text"
-                    value="${escapeHTML(field.value)}"
-                    data-profile-source="${source}"
-                    data-profile-id="${field.id}"
-                    data-profile-prop="value"
-                    aria-label="内容"
-                  >
+                  <div class="profile-editor-field">
+
+                    <span class="profile-editor-label">
+                      内容
+                    </span>
+
+                    <input
+                      type="text"
+                      value="${escapeHTML(field.value)}"
+                      data-profile-source="${source}"
+                      data-profile-id="${field.id}"
+                      data-profile-prop="value"
+                      aria-label="内容"
+                    >
+
+                  </div>
+
+
+                  <div class="profile-editor-field profile-width-field">
+
+                    <span class="profile-editor-label">
+                      横幅
+                    </span>
+
+                    <select
+                      data-profile-source="${source}"
+                      data-profile-id="${field.id}"
+                      data-profile-prop="width"
+                    >
+
+                      <option
+                        value="third"
+                        ${
+                          field.width === "third"
+                            ? "selected"
+                            : ""
+                        }
+                      >
+                        1/3幅
+                      </option>
+
+                      <option
+                        value="half"
+                        ${
+                          field.width === "half"
+                            ? "selected"
+                            : ""
+                        }
+                      >
+                        1/2幅
+                      </option>
+
+                      <option
+                        value="twoThirds"
+                        ${
+                          field.width === "twoThirds"
+                            ? "selected"
+                            : ""
+                        }
+                      >
+                        2/3幅
+                      </option>
+
+                      <option
+                        value="full"
+                        ${
+                          !field.width ||
+                          field.width === "full"
+                            ? "selected"
+                            : ""
+                        }
+                      >
+                        全幅
+                      </option>
+
+                    </select>
+
+                  </div>
 
                 </div>
               `
@@ -3557,14 +3687,8 @@ function renderInspector() {
         block.content
           .profileEnabled
             ? profileEditorHTML(
-                block.content
-                  .profileFields,
-                "embedded",
-                Number(
-                  block.content
-                    .profileColumns
-                ) ||
-                2
+                block.content.profileFields,
+                "embedded"
               )
             : ""
       }
@@ -3583,18 +3707,8 @@ function renderInspector() {
 
     contentHTML +=
       profileEditorHTML(
-
-        block.content
-          .fields,
-
-        "self",
-
-        Number(
-          block.content
-            .columns
-        ) ||
-        2
-
+        block.content.fields,
+        "self"
       );
 
   }
@@ -4172,35 +4286,35 @@ function handleInspectorChange(
 
   /* PROFILE COLUMNS */
 
-  const profileColumns =
-    event.target.dataset
-      .profileColumns;
+const profileColumns =
+  event.target.dataset
+    .profileColumns;
 
 
-  if (profileColumns) {
+if (profileColumns) {
 
-    if (
-      profileColumns ===
-      "embedded"
-    ) {
+  if (
+    profileColumns ===
+    "embedded"
+  ) {
 
-      block.content
-        .profileColumns =
-        Number(
-          event.target.value
-        );
+    block.content
+      .profileColumns =
+      Number(
+        event.target.value
+      );
 
-    } else {
+  } else {
 
-      block.content
-        .columns =
-        Number(
-          event.target.value
-        );
-
-    }
+    block.content
+      .columns =
+      Number(
+        event.target.value
+      );
 
   }
+
+}
 
 
   renderCanvas();
