@@ -460,30 +460,29 @@ button {
 .canvas-device {
   width: 680px;
   max-width: 100%;
-
+  height:
+    min(
+      900px,
+      calc(100vh - 110px)
+    );
   margin: auto;
-
   padding: 12px;
-
   background: #272429;
-
   border-radius: 30px;
-
   box-shadow:
     0 20px 50px rgba(0,0,0,.13);
 }
 
 .canvas {
-  min-height: 720px;
-
+  width: 100%;
+  height: 100%;
+  min-height: 0;
   padding: 28px;
-
-  overflow: hidden;
-
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
   border-radius: 20px;
-
   background: #09101a;
-
   transition: background .3s ease;
 }
 
@@ -497,6 +496,29 @@ button {
 
   color: #777;
   font-size: 11px;
+}
+
+/* Chrome系スクロールバー */
+
+.canvas::-webkit-scrollbar {
+  width: 8px;
+}
+
+.canvas::-webkit-scrollbar-track {
+  background:
+    rgba(255,255,255,.03);
+}
+
+.canvas::-webkit-scrollbar-thumb {
+  background:
+    rgba(255,255,255,.18);
+
+  border-radius: 999px;
+}
+
+.canvas::-webkit-scrollbar-thumb:hover {
+  background:
+    rgba(255,255,255,.28);
 }
 
 
@@ -1525,9 +1547,14 @@ button {
 
 @media (max-width: 760px) {
 
+  /* =========================================
+     全体
+  ========================================== */
+
   .app {
     display: block;
   }
+
 
   .left-panel,
   .right-panel {
@@ -1535,24 +1562,215 @@ button {
 
     width: 100%;
     height: auto;
+
+    padding:
+      20px 14px
+      36px;
+
+    border-left: 0;
+    border-right: 0;
   }
 
+
+  /* =========================================
+     WORKSPACE
+  ========================================== */
+
   .workspace {
+    width: 100%;
+
     min-height: auto;
 
     padding:
-      20px 8px
-      60px;
+      18px 8px
+      40px;
   }
+
+
+  /* 上部の
+     編集表示 / プレビュー / 再生
+  */
+
+  .workspace-header {
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 10px;
+
+    width: 100%;
+  }
+
+
+  .workspace-actions {
+    display: grid;
+
+    grid-template-columns:
+      repeat(3, 1fr);
+
+    width: 100%;
+
+    gap: 5px;
+  }
+
+
+  .workspace-button {
+    width: 100%;
+
+    min-height: 36px;
+
+    padding:
+      7px 4px;
+
+    font-size: 8px;
+  }
+
+
+  /* =========================================
+     CANVAS
+  ========================================== */
 
   .canvas-device {
-    border-radius: 20px;
+    width: 100%;
 
-    padding: 7px;
+    height: auto;
+    max-height: none;
+
+    margin: 0;
+
+    padding: 5px;
+
+    border-radius: 18px;
+
+    box-shadow:
+      0 10px 30px
+      rgba(0,0,0,.12);
   }
 
+
   .canvas {
-    padding: 15px;
+    width: 100%;
+
+    height: auto;
+
+    min-height: 520px;
+    max-height: none;
+
+    padding: 12px;
+
+    /*
+     * スマホでは
+     * キャンバス内スクロールではなく
+     * ページ全体を普通にスクロール
+     */
+    overflow: visible;
+
+    border-radius: 14px;
+  }
+
+
+  /* =========================================
+     BLOCK
+  ========================================== */
+
+  .builder-block {
+    margin-bottom: 14px;
+
+    /*
+     * PCで余白を大きく設定していても
+     * スマホでは最大18px
+     */
+    padding:
+      min(
+        var(--block-padding),
+        18px
+      );
+  }
+
+
+  /* タイトルが横にはみ出さない */
+
+  .part-main-title {
+    font-size:
+      min(
+        var(--block-font-size),
+        9vw
+      );
+  }
+
+
+  /* =========================================
+     ＋ PARTS MENU
+  ========================================== */
+
+  .mini-palette {
+    width:
+      min(
+        280px,
+        calc(100vw - 48px)
+      );
+
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+
+  /*
+   * スマホは2列になるので
+   * メニューが縦に長くなる
+   */
+
+  .inline-inserter:has(.mini-palette) {
+    margin-bottom: 235px;
+  }
+
+
+  /* =========================================
+     PROFILE
+  ========================================== */
+
+  /*
+   * 1/3はスマホだと細すぎるので
+   * 1/2幅に変更
+   */
+
+  .profile-width-third {
+    grid-column:
+      span 3;
+  }
+
+
+  .profile-width-half {
+    grid-column:
+      span 3;
+  }
+
+
+  /*
+   * 2/3と全幅はスマホでは全幅
+   */
+
+  .profile-width-twoThirds,
+  .profile-width-full {
+    grid-column:
+      1 / -1;
+  }
+
+
+  /* =========================================
+     HELP
+  ========================================== */
+
+  .workspace-help {
+    width: 100%;
+
+    padding:
+      0 8px;
+
+    line-height: 1.7;
   }
 
 }
@@ -2154,14 +2372,3 @@ input[type="text"]:first-of-type {
 }
 
 
-@media (max-width: 760px) {
-
-  .profile-cols-3 {
-    grid-template-columns:
-      repeat(
-        2,
-        minmax(0, 1fr)
-      );
-  }
-
-}
