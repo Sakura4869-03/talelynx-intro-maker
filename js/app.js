@@ -1,23 +1,9 @@
 "use strict";
 
-
-/* =========================================================
-   CONSTANTS
-========================================================= */
-
-const STORAGE_KEY =
-  "talelynxPartsBuilderV21";
-
-const MAX_CHARACTERS =
-  10000;
-
-
-/* =========================================================
-   THEMES
-========================================================= */
+const STORAGE_KEY = "talelynxPartsBuilderV21";
+const MAX_CHARACTERS = 10000;
 
 const THEMES = {
-
   cyber: {
     canvas: "#08101a",
     background: "#0b121a",
@@ -61,13 +47,8 @@ const THEMES = {
     border: "#d0d0cd",
     glow: "#999999"
   }
-
 };
 
-
-/* =========================================================
-   BLOCK META
-========================================================= */
 
 const BLOCK_META = {
 
@@ -259,10 +240,6 @@ const BLOCK_META = {
 };
 
 
-/* =========================================================
-   PROFILE TEMPLATE
-========================================================= */
-
 const PROFILE_TEMPLATE = [
 
   {
@@ -341,7 +318,6 @@ const PROFILE_TEMPLATE = [
 
 
 const MINI_PARTS = [
-
   ["neonTitle", "タイトル"],
   ["messageBox", "メッセージ"],
   ["sectionText", "セクション"],
@@ -353,45 +329,24 @@ const MINI_PARTS = [
   ["divider", "区切り"],
   ["button", "CTA"],
   ["toggle", "トグル"]
-
 ];
 
 
-/* =========================================================
-   STATE
-========================================================= */
-
 let state = {
-
   theme: "cyber",
-
   uiMode: "edit",
-
   blocks: []
-
 };
 
 
 let selectedId = null;
-
 let openInserterKey = null;
-
 let dragBlockId = null;
-
 let imageUploadTargetId = null;
 
 
-/*
- * 画像そのものは保存しない。
- * ページを開いている間だけ保持。
- */
-const previewImages =
-  new Map();
+const previewImages = new Map();
 
-
-/* =========================================================
-   DOM
-========================================================= */
 
 const canvas =
   document.getElementById("canvas");
@@ -400,59 +355,36 @@ const inspector =
   document.getElementById("inspector");
 
 const inspectorEmpty =
-  document.getElementById(
-    "inspectorEmpty"
-  );
+  document.getElementById("inspectorEmpty");
 
 const inspectorFields =
-  document.getElementById(
-    "inspectorFields"
-  );
+  document.getElementById("inspectorFields");
 
 const htmlOutput =
-  document.getElementById(
-    "htmlOutput"
-  );
+  document.getElementById("htmlOutput");
 
 const charCount =
-  document.getElementById(
-    "charCount"
-  );
+  document.getElementById("charCount");
 
 const remaining =
-  document.getElementById(
-    "remaining"
-  );
+  document.getElementById("remaining");
 
 const counter =
-  document.getElementById(
-    "counter"
-  );
+  document.getElementById("counter");
 
 const progressBar =
-  document.getElementById(
-    "progressBar"
-  );
+  document.getElementById("progressBar");
 
 const copyButton =
-  document.getElementById(
-    "copyButton"
-  );
+  document.getElementById("copyButton");
 
 const saveStatus =
-  document.getElementById(
-    "saveStatus"
-  );
+  document.getElementById("saveStatus");
 
 const previewFileInput =
-  document.getElementById(
-    "previewFileInput"
-  );
+  document.getElementById("previewFileInput");
 
 
-/* =========================================================
-   HELPERS
-========================================================= */
 
 function createId() {
 
@@ -474,38 +406,35 @@ function createId() {
 }
 
 
+
 function escapeHTML(
   value = ""
 ) {
 
   return String(value)
-
     .replaceAll(
       "&",
       "&amp;"
     )
-
     .replaceAll(
       "<",
       "&lt;"
     )
-
     .replaceAll(
       ">",
       "&gt;"
     )
-
     .replaceAll(
       '"',
       "&quot;"
     )
-
     .replaceAll(
       "'",
       "&#039;"
     );
 
 }
+
 
 
 function lineBreaks(
@@ -521,13 +450,19 @@ function lineBreaks(
 }
 
 
-function deepClone(value) {
+
+function deepClone(
+  value
+) {
 
   return JSON.parse(
-    JSON.stringify(value)
+    JSON.stringify(
+      value
+    )
   );
 
 }
+
 
 
 function clamp(
@@ -547,6 +482,7 @@ function clamp(
 }
 
 
+
 function getTheme() {
 
   return (
@@ -559,6 +495,7 @@ function getTheme() {
 }
 
 
+
 function cloneProfileFields() {
 
   return deepClone(
@@ -568,7 +505,10 @@ function cloneProfileFields() {
 }
 
 
-function cleanImageKey(value) {
+
+function cleanImageKey(
+  value
+) {
 
   return String(
     value ||
@@ -583,11 +523,10 @@ function cleanImageKey(value) {
 }
 
 
-/* =========================================================
-   COPY BLOCK
-========================================================= */
 
-function refreshIds(block) {
+function refreshIds(
+  block
+) {
 
   block.id =
     createId();
@@ -612,11 +551,10 @@ function refreshIds(block) {
 }
 
 
-/* =========================================================
-   CREATE BLOCK
-========================================================= */
 
-function createBaseBlock(type) {
+function createBaseBlock(
+  type
+) {
 
   const theme =
     getTheme();
@@ -691,17 +629,23 @@ function createBaseBlock(type) {
 }
 
 
-function createBlock(type) {
+
+function createBlock(
+  type
+) {
 
   const block =
-    createBaseBlock(type);
-
+    createBaseBlock(
+      type
+    );
 
   const theme =
     getTheme();
 
 
-  switch (type) {
+  switch (
+    type
+  ) {
 
 
     case "neonTitle":
@@ -738,6 +682,7 @@ function createBlock(type) {
       break;
 
 
+
     case "messageBox":
 
       block.content = {
@@ -764,6 +709,7 @@ function createBlock(type) {
       break;
 
 
+
     case "sectionText":
 
       block.content = {
@@ -784,6 +730,7 @@ function createBlock(type) {
         20;
 
       break;
+
 
 
     case "card":
@@ -811,6 +758,7 @@ function createBlock(type) {
         18;
 
       break;
+
 
 
     case "image":
@@ -848,6 +796,7 @@ function createBlock(type) {
       break;
 
 
+
     case "profile":
 
       block.content = {
@@ -875,6 +824,7 @@ function createBlock(type) {
       break;
 
 
+
     case "notice":
 
       block.content = {
@@ -892,6 +842,7 @@ function createBlock(type) {
         14;
 
       break;
+
 
 
     case "tags":
@@ -922,6 +873,7 @@ function createBlock(type) {
       break;
 
 
+
     case "divider":
 
       block.content = {
@@ -941,6 +893,7 @@ function createBlock(type) {
         10;
 
       break;
+
 
 
     case "button":
@@ -976,6 +929,7 @@ function createBlock(type) {
       break;
 
 
+
     case "toggle":
 
       block.content = {
@@ -1007,11 +961,10 @@ function createBlock(type) {
 }
 
 
-/* =========================================================
-   NORMALIZE OLD SAVE DATA
-========================================================= */
 
-function normalizeBlock(block) {
+function normalizeBlock(
+  block
+) {
 
   const base =
     createBlock(
@@ -1113,9 +1066,6 @@ function normalizeBlock(block) {
 }
 
 
-/* =========================================================
-   RECURSIVE BLOCK SEARCH
-========================================================= */
 
 function findBlockLocation(
   id,
@@ -1168,8 +1118,12 @@ function findBlockLocation(
         );
 
 
-      if (found) {
+      if (
+        found
+      ) {
+
         return found;
+
       }
 
     }
@@ -1182,6 +1136,7 @@ function findBlockLocation(
 }
 
 
+
 function getSelectedBlock() {
 
   return (
@@ -1192,6 +1147,7 @@ function getSelectedBlock() {
   );
 
 }
+
 
 
 function getContainer(
@@ -1223,11 +1179,10 @@ function getContainer(
 }
 
 
-/* =========================================================
-   STORAGE
-========================================================= */
 
-let saveTimer = null;
+let saveTimer =
+  null;
+
 
 
 function scheduleSave() {
@@ -1237,7 +1192,9 @@ function scheduleSave() {
   );
 
 
-  if (saveStatus) {
+  if (
+    saveStatus
+  ) {
 
     saveStatus.textContent =
       "● 保存中";
@@ -1254,41 +1211,51 @@ function scheduleSave() {
 }
 
 
+
 function saveState() {
 
   try {
 
-    localStorage.setItem(
+    localStorage
+      .setItem(
 
-      STORAGE_KEY,
+        STORAGE_KEY,
 
-      JSON.stringify({
+        JSON.stringify({
 
-        theme:
-          state.theme,
+          theme:
+            state.theme,
 
-        blocks:
-          state.blocks
+          blocks:
+            state.blocks
 
-      })
+        })
 
-    );
+      );
 
 
-    if (saveStatus) {
+    if (
+      saveStatus
+    ) {
 
       saveStatus.textContent =
         "● 自動保存";
 
     }
 
-  } catch (error) {
+  }
+  catch (
+    error
+  ) {
 
-    console.warn(error);
+    console.warn(
+      error
+    );
 
   }
 
 }
+
 
 
 function loadState() {
@@ -1296,18 +1263,25 @@ function loadState() {
   try {
 
     const saved =
-      localStorage.getItem(
-        STORAGE_KEY
-      );
+      localStorage
+        .getItem(
+          STORAGE_KEY
+        );
 
 
-    if (!saved) {
+    if (
+      !saved
+    ) {
+
       return;
+
     }
 
 
     const parsed =
-      JSON.parse(saved);
+      JSON.parse(
+        saved
+      );
 
 
     if (
@@ -1333,18 +1307,20 @@ function loadState() {
 
     }
 
-  } catch (error) {
+  }
+  catch (
+    error
+  ) {
 
-    console.warn(error);
+    console.warn(
+      error
+    );
 
   }
 
 }
 
 
-/* =========================================================
-   CSS VARIABLES
-========================================================= */
 
 function blockStyleVariables(
   block
@@ -1378,18 +1354,23 @@ function blockStyleVariables(
 }
 
 
-function effectClass(block) {
+
+function effectClass(
+  block
+) {
 
   const preset =
-    block.effect?.preset;
+    block.effect
+      ?.preset;
 
 
   if (
     !preset ||
-    preset ===
-    "none"
+    preset === "none"
   ) {
+
     return "";
+
   }
 
 
@@ -1399,6 +1380,7 @@ function effectClass(block) {
   );
 
 }
+
 
 
 function animationClass(
@@ -1412,10 +1394,11 @@ function animationClass(
 
   if (
     !animation ||
-    animation ===
-    "none"
+    animation === "none"
   ) {
+
     return "";
+
   }
 
 
@@ -1427,9 +1410,6 @@ function animationClass(
 }
 
 
-/* =========================================================
-   PROFILE MARKUP
-========================================================= */
 
 function profileMarkup(
   fields,
@@ -1444,7 +1424,9 @@ function profileMarkup(
       );
 
 
-  if (!enabled.length) {
+  if (
+    !enabled.length
+  ) {
 
     return `
       <div class="profile-empty">
@@ -1466,6 +1448,7 @@ function profileMarkup(
               field.width ||
               "full";
 
+
             return `
               <div
                 class="
@@ -1474,17 +1457,13 @@ function profileMarkup(
                 "
               >
 
-                <div class="profile-label">
-                  ${escapeHTML(field.label)}
-                </div>
+                <div class="profile-label">${escapeHTML(field.label)}</div>
 
                 <div
                   class="profile-value"
                   data-profile-field="${field.id}"
                   data-profile-source="${source}"
-                >
-                  ${escapeHTML(field.value)}
-                </div>
+                >${escapeHTML(field.value)}</div>
 
               </div>
             `;
@@ -1499,26 +1478,27 @@ function profileMarkup(
 }
 
 
-/* =========================================================
-   IMAGE
-========================================================= */
 
-function imageMarkup(block) {
+function imageMarkup(
+  block
+) {
 
   const c =
     block.content;
 
-
   const src =
-    previewImages.get(
-      block.id
-    );
+    previewImages
+      .get(
+        block.id
+      );
 
 
   let imageArea;
 
 
-  if (src) {
+  if (
+    src
+  ) {
 
     imageArea = `
       <div
@@ -1547,7 +1527,8 @@ function imageMarkup(block) {
       </div>
     `;
 
-  } else {
+  }
+  else {
 
     imageArea = `
       <div
@@ -1611,9 +1592,7 @@ function imageMarkup(block) {
       <div
         class="part-subtitle"
         data-edit-field="caption"
-      >
-        ${escapeHTML(c.caption)}
-      </div>
+      >${escapeHTML(c.caption)}</div>
 
       ${profile}
 
@@ -1623,9 +1602,6 @@ function imageMarkup(block) {
 }
 
 
-/* =========================================================
-   BLOCK CONTENT
-========================================================= */
 
 function blockContentMarkup(
   block,
@@ -1649,26 +1625,21 @@ function blockContentMarkup(
           <div
             class="part-kicker"
             data-edit-field="kicker"
-          >
-            ${escapeHTML(c.kicker)}
-          </div>
+          >${escapeHTML(c.kicker)}</div>
 
           <div
             class="part-main-title"
             data-edit-field="title"
-          >
-            ${escapeHTML(c.title)}
-          </div>
+          >${escapeHTML(c.title)}</div>
 
           <div
             class="part-subtitle"
             data-edit-field="subtitle"
-          >
-            ${escapeHTML(c.subtitle)}
-          </div>
+          >${escapeHTML(c.subtitle)}</div>
 
         </div>
       `;
+
 
 
     case "messageBox":
@@ -1679,26 +1650,21 @@ function blockContentMarkup(
           <div
             class="part-kicker"
             data-edit-field="kicker"
-          >
-            ${escapeHTML(c.kicker)}
-          </div>
+          >${escapeHTML(c.kicker)}</div>
 
           <div
             class="message-body"
             data-edit-field="body"
-          >
-            ${lineBreaks(c.body)}
-          </div>
+          >${lineBreaks(c.body)}</div>
 
           <div
             class="message-footer"
             data-edit-field="footer"
-          >
-            ${escapeHTML(c.footer)}
-          </div>
+          >${escapeHTML(c.footer)}</div>
 
         </div>
       `;
+
 
 
     case "sectionText":
@@ -1709,26 +1675,21 @@ function blockContentMarkup(
           <div
             class="part-kicker"
             data-edit-field="kicker"
-          >
-            ${escapeHTML(c.kicker)}
-          </div>
+          >${escapeHTML(c.kicker)}</div>
 
           <div
             class="part-main-title"
             data-edit-field="heading"
-          >
-            ${escapeHTML(c.heading)}
-          </div>
+          >${escapeHTML(c.heading)}</div>
 
           <div
             class="part-body"
             data-edit-field="body"
-          >
-            ${lineBreaks(c.body)}
-          </div>
+          >${lineBreaks(c.body)}</div>
 
         </div>
       `;
+
 
 
     case "card":
@@ -1739,26 +1700,21 @@ function blockContentMarkup(
           <div
             class="part-kicker"
             data-edit-field="kicker"
-          >
-            ${escapeHTML(c.kicker)}
-          </div>
+          >${escapeHTML(c.kicker)}</div>
 
           <div
             class="part-main-title"
             data-edit-field="heading"
-          >
-            ${escapeHTML(c.heading)}
-          </div>
+          >${escapeHTML(c.heading)}</div>
 
           <div
             class="part-body"
             data-edit-field="body"
-          >
-            ${lineBreaks(c.body)}
-          </div>
+          >${lineBreaks(c.body)}</div>
 
         </div>
       `;
+
 
 
     case "image":
@@ -1766,6 +1722,7 @@ function blockContentMarkup(
       return imageMarkup(
         block
       );
+
 
 
     case "profile":
@@ -1776,9 +1733,7 @@ function blockContentMarkup(
           <div
             class="part-kicker"
             data-edit-field="heading"
-          >
-            ${escapeHTML(c.heading)}
-          </div>
+          >${escapeHTML(c.heading)}</div>
 
           ${profileMarkup(
             c.fields,
@@ -1789,6 +1744,7 @@ function blockContentMarkup(
       `;
 
 
+
     case "notice":
 
       return `
@@ -1797,19 +1753,16 @@ function blockContentMarkup(
           <div
             class="part-kicker"
             data-edit-field="heading"
-          >
-            ${escapeHTML(c.heading)}
-          </div>
+          >${escapeHTML(c.heading)}</div>
 
           <div
             class="part-body"
             data-edit-field="body"
-          >
-            ${lineBreaks(c.body)}
-          </div>
+          >${lineBreaks(c.body)}</div>
 
         </div>
       `;
+
 
 
     case "tags":
@@ -1832,6 +1785,7 @@ function blockContentMarkup(
       `;
 
 
+
     case "divider":
 
       return `
@@ -1844,9 +1798,7 @@ function blockContentMarkup(
             <span
               class="divider-label"
               data-edit-field="label"
-            >
-              ${escapeHTML(c.label)}
-            </span>
+            >${escapeHTML(c.label)}</span>
 
             <span class="divider-line"></span>
 
@@ -1854,6 +1806,7 @@ function blockContentMarkup(
 
         </div>
       `;
+
 
 
     case "button":
@@ -1864,12 +1817,11 @@ function blockContentMarkup(
           <div
             class="cta-preview"
             data-edit-field="label"
-          >
-            ${escapeHTML(c.label)}
-          </div>
+          >${escapeHTML(c.label)}</div>
 
         </div>
       `;
+
 
 
     case "toggle":
@@ -1892,9 +1844,7 @@ function blockContentMarkup(
 
             <span
               data-edit-field="summary"
-            >
-              ${escapeHTML(c.summary)}
-            </span>
+            >${escapeHTML(c.summary)}</span>
 
           </summary>
 
@@ -1929,9 +1879,6 @@ function blockContentMarkup(
 }
 
 
-/* =========================================================
-   TOOLBAR
-========================================================= */
 
 function toolbarMarkup() {
 
@@ -1967,9 +1914,6 @@ function toolbarMarkup() {
 }
 
 
-/* =========================================================
-   INSERTER
-========================================================= */
 
 function inserterKey(
   parentId,
@@ -1989,6 +1933,7 @@ function inserterKey(
   );
 
 }
+
 
 
 function renderInserter(
@@ -2056,9 +2001,6 @@ function renderInserter(
 }
 
 
-/* =========================================================
-   BLOCK RENDER
-========================================================= */
 
 function renderBlock(
   block,
@@ -2106,6 +2048,7 @@ function renderBlock(
 }
 
 
+
 function renderChildren(
   blocks,
   parentId = "root",
@@ -2133,9 +2076,6 @@ function renderChildren(
 }
 
 
-/* =========================================================
-   CANVAS
-========================================================= */
 
 function renderCanvas() {
 
@@ -2147,15 +2087,17 @@ function renderCanvas() {
     theme.canvas;
 
 
-  canvas.classList.toggle(
-    "edit-mode",
-    state.uiMode ===
-    "edit"
-  );
+  canvas.classList
+    .toggle(
+      "edit-mode",
+      state.uiMode ===
+      "edit"
+    );
 
 
   document.body
-    .classList.toggle(
+    .classList
+    .toggle(
       "preview-mode",
       state.uiMode ===
       "preview"
@@ -2182,63 +2124,58 @@ function renderCanvas() {
         );
 
 
-if (
-  state.uiMode ===
-  "edit"
-) {
+  if (
+    state.uiMode ===
+    "edit"
+  ) {
 
-  canvas
-    .querySelectorAll(
-      `
+    canvas
+      .querySelectorAll(`
         [data-edit-field],
         [data-profile-field]
-      `
-    )
-    .forEach(
-      element => {
+      `)
+      .forEach(
+        element => {
 
-        /*
-         * トグルタイトルは
-         * クリック = 開閉に使うため
-         * 直接編集させない
-         */
-        if (
-          element.closest(
-            "summary"
-          )
-        ) {
+          if (
+            element.closest(
+              "summary"
+            )
+          ) {
+
+            element.contentEditable =
+              "false";
+
+            element.spellcheck =
+              false;
+
+            return;
+
+          }
+
 
           element.contentEditable =
-            "false";
+            "true";
 
           element.spellcheck =
             false;
 
-          return;
-
         }
-        element.contentEditable =
-          "true";
+      );
 
-        element.spellcheck =
-          false;
-
-      }
-    );
-
-}
+  }
 
 }
 
 
-/* =========================================================
-   SELECT
-========================================================= */
 
-function selectBlock(id) {
+function selectBlock(
+  id
+) {
 
   selectedId =
     id;
+
 
   canvas
     .querySelectorAll(
@@ -2247,10 +2184,16 @@ function selectBlock(id) {
     .forEach(
       element => {
 
-        element.classList.toggle(
-          "selected",
-          element.dataset.blockId === id
-        );
+        element.classList
+          .toggle(
+
+            "selected",
+
+            element.dataset
+              .blockId ===
+            id
+
+          );
 
       }
     );
@@ -2261,52 +2204,53 @@ function selectBlock(id) {
 }
 
 
-/* =========================================================
-   CANVAS CLICK
-========================================================= */
 
 canvas.addEventListener(
   "click",
   event => {
 
-
-    /* IMAGE PICK */
-
     const pick =
-      event.target.closest(
-        "[data-image-pick]"
-      );
+      event.target
+        .closest(
+          "[data-image-pick]"
+        );
 
 
-    if (pick) {
+    if (
+      pick
+    ) {
 
-      event.stopPropagation();
+      event
+        .stopPropagation();
 
 
       imageUploadTargetId =
-        pick.dataset.imagePick;
+        pick.dataset
+          .imagePick;
 
 
       previewFileInput
         ?.click();
-
 
       return;
 
     }
 
 
-    /* INSERTER */
 
     const toggle =
-      event.target.closest(
-        "[data-toggle-inserter]"
-      );
+      event.target
+        .closest(
+          "[data-toggle-inserter]"
+        );
 
 
-    if (toggle) {
+    if (
+      toggle
+    ) {
 
-      event.stopPropagation();
+      event
+        .stopPropagation();
 
 
       const key =
@@ -2315,7 +2259,8 @@ canvas.addEventListener(
 
 
       openInserterKey =
-        openInserterKey === key
+        openInserterKey ===
+        key
           ? null
           : key;
 
@@ -2327,17 +2272,20 @@ canvas.addEventListener(
     }
 
 
-    /* INLINE ADD */
 
     const inlineAdd =
-      event.target.closest(
-        "[data-inline-add]"
-      );
+      event.target
+        .closest(
+          "[data-inline-add]"
+        );
 
 
-    if (inlineAdd) {
+    if (
+      inlineAdd
+    ) {
 
-      event.stopPropagation();
+      event
+        .stopPropagation();
 
 
       insertBlock(
@@ -2353,33 +2301,40 @@ canvas.addEventListener(
 
       );
 
-
       return;
 
     }
 
 
-    /* ACTION */
 
     const actionButton =
-      event.target.closest(
-        "[data-canvas-action]"
-      );
-
-
-    if (actionButton) {
-
-      event.stopPropagation();
-
-
-      const blockEl =
-        actionButton.closest(
-          "[data-block-id]"
+      event.target
+        .closest(
+          "[data-canvas-action]"
         );
 
 
-      if (!blockEl) {
+    if (
+      actionButton
+    ) {
+
+      event
+        .stopPropagation();
+
+
+      const blockEl =
+        actionButton
+          .closest(
+            "[data-block-id]"
+          );
+
+
+      if (
+        !blockEl
+      ) {
+
         return;
+
       }
 
 
@@ -2393,21 +2348,22 @@ canvas.addEventListener(
           .canvasAction
       );
 
-
       return;
 
     }
 
 
-    /* SELECT BLOCK */
 
     const blockEl =
-      event.target.closest(
-        "[data-block-id]"
-      );
+      event.target
+        .closest(
+          "[data-block-id]"
+        );
 
 
-    if (blockEl) {
+    if (
+      blockEl
+    ) {
 
       selectBlock(
         blockEl.dataset
@@ -2420,55 +2376,63 @@ canvas.addEventListener(
 );
 
 
-/* =========================================================
-   TOGGLE OPEN / CLOSE
-========================================================= */
 
 canvas.addEventListener(
   "toggle",
   event => {
 
     const details =
-      event.target.closest(
-        ".toggle-preview"
-      );
+      event.target
+        .closest(
+          ".toggle-preview"
+        );
 
 
-    if (!details) {
+    if (
+      !details
+    ) {
+
       return;
+
     }
 
 
     const blockElement =
-      details.closest(
-        "[data-block-id]"
-      );
+      details
+        .closest(
+          "[data-block-id]"
+        );
 
 
-    if (!blockElement) {
+    if (
+      !blockElement
+    ) {
+
       return;
+
     }
 
 
     const block =
       findBlockLocation(
-        blockElement.dataset.blockId
+        blockElement.dataset
+          .blockId
       )?.block;
 
 
     if (
       !block ||
-      block.type !== "toggle"
+      block.type !==
+      "toggle"
     ) {
+
       return;
+
     }
 
 
-    /*
-     * 実際のdetailsの開閉状態を
-     * データ側にも同期
-     */
-    block.content.defaultOpen =
+    block.content
+      .defaultOpen =
       details.open;
 
 
@@ -2480,23 +2444,23 @@ canvas.addEventListener(
 
 
 
-/* =========================================================
-   DIRECT EDIT
-========================================================= */
-
 canvas.addEventListener(
   "input",
   event => {
 
-
     const blockEl =
-      event.target.closest(
-        "[data-block-id]"
-      );
+      event.target
+        .closest(
+          "[data-block-id]"
+        );
 
 
-    if (!blockEl) {
+    if (
+      !blockEl
+    ) {
+
       return;
+
     }
 
 
@@ -2507,26 +2471,33 @@ canvas.addEventListener(
       )?.block;
 
 
-    if (!block) {
+    if (
+      !block
+    ) {
+
       return;
+
     }
 
 
-    /* NORMAL TEXT */
 
     const editable =
-      event.target.closest(
-        "[data-edit-field]"
-      );
+      event.target
+        .closest(
+          "[data-edit-field]"
+        );
 
 
-    if (editable) {
+    if (
+      editable
+    ) {
 
       block.content[
         editable.dataset
           .editField
       ] =
-        editable.innerText;
+        editable.innerText
+          .trim();
 
 
       selectedId =
@@ -2544,15 +2515,17 @@ canvas.addEventListener(
     }
 
 
-    /* PROFILE */
 
     const profileValue =
-      event.target.closest(
-        "[data-profile-field]"
-      );
+      event.target
+        .closest(
+          "[data-profile-field]"
+        );
 
 
-    if (profileValue) {
+    if (
+      profileValue
+    ) {
 
       const source =
         profileValue.dataset
@@ -2569,19 +2542,23 @@ canvas.addEventListener(
 
 
       const field =
-        fields?.find(
-          item =>
-            item.id ===
-            profileValue.dataset
-              .profileField
-        );
+        fields
+          ?.find(
+            item =>
+              item.id ===
+              profileValue.dataset
+                .profileField
+          );
 
 
-      if (field) {
+      if (
+        field
+      ) {
 
         field.value =
           profileValue
-            .innerText;
+            .innerText
+            .trim();
 
       }
 
@@ -2602,15 +2579,11 @@ canvas.addEventListener(
 );
 
 
-/* =========================================================
-   LOCAL PREVIEW IMAGE
-========================================================= */
 
 previewFileInput
   ?.addEventListener(
     "change",
     () => {
-
 
       const file =
         previewFileInput
@@ -2621,7 +2594,9 @@ previewFileInput
         !file ||
         !imageUploadTargetId
       ) {
+
         return;
+
       }
 
 
@@ -2632,11 +2607,11 @@ previewFileInput
       reader.onload =
         () => {
 
-
-          previewImages.set(
-            imageUploadTargetId,
-            reader.result
-          );
+          previewImages
+            .set(
+              imageUploadTargetId,
+              reader.result
+            );
 
 
           renderCanvas();
@@ -2646,9 +2621,10 @@ previewFileInput
         };
 
 
-      reader.readAsDataURL(
-        file
-      );
+      reader
+        .readAsDataURL(
+          file
+        );
 
 
       previewFileInput.value =
@@ -2658,39 +2634,46 @@ previewFileInput
   );
 
 
-/* =========================================================
-   DRAG
-========================================================= */
 
 canvas.addEventListener(
   "dragstart",
   event => {
 
-
     const handle =
-      event.target.closest(
-        "[data-drag-handle]"
-      );
+      event.target
+        .closest(
+          "[data-drag-handle]"
+        );
 
 
-    if (!handle) {
+    if (
+      !handle
+    ) {
+
       return;
+
     }
 
 
     const block =
-      handle.closest(
-        "[data-block-id]"
-      );
+      handle
+        .closest(
+          "[data-block-id]"
+        );
 
 
-    if (!block) {
+    if (
+      !block
+    ) {
+
       return;
+
     }
 
 
     dragBlockId =
-      block.dataset.blockId;
+      block.dataset
+        .blockId;
 
 
     event.dataTransfer
@@ -2702,29 +2685,33 @@ canvas.addEventListener(
 
     event.dataTransfer
       .effectAllowed =
-        "move";
+      "move";
 
   }
 );
+
 
 
 canvas.addEventListener(
   "dragover",
   event => {
 
-
     const target =
-      event.target.closest(
-        "[data-block-id]"
-      );
+      event.target
+        .closest(
+          "[data-block-id]"
+        );
 
 
     if (
       !target ||
-      target.dataset.blockId ===
+      target.dataset
+        .blockId ===
       dragBlockId
     ) {
+
       return;
+
     }
 
 
@@ -2736,25 +2723,25 @@ canvas.addEventListener(
 
     const targetLoc =
       findBlockLocation(
-        target.dataset.blockId
+        target.dataset
+          .blockId
       );
 
 
-    /*
-     * 今回は同じ階層内だけ
-     * ドラッグ並び替え可能。
-     */
     if (
       !sourceLoc ||
       !targetLoc ||
       sourceLoc.parentId !==
       targetLoc.parentId
     ) {
+
       return;
+
     }
 
 
-    event.preventDefault();
+    event
+      .preventDefault();
 
 
     canvas
@@ -2763,40 +2750,46 @@ canvas.addEventListener(
       )
       .forEach(
         el =>
-          el.classList.remove(
-            "drag-over"
-          )
+          el.classList
+            .remove(
+              "drag-over"
+            )
       );
 
 
-    target.classList.add(
-      "drag-over"
-    );
+    target.classList
+      .add(
+        "drag-over"
+      );
 
   }
 );
+
 
 
 canvas.addEventListener(
   "drop",
   event => {
 
-
     const target =
-      event.target.closest(
-        "[data-block-id]"
-      );
+      event.target
+        .closest(
+          "[data-block-id]"
+        );
 
 
     if (
       !target ||
       !dragBlockId
     ) {
+
       return;
+
     }
 
 
-    event.preventDefault();
+    event
+      .preventDefault();
 
 
     const sourceLoc =
@@ -2807,7 +2800,8 @@ canvas.addEventListener(
 
     const targetLoc =
       findBlockLocation(
-        target.dataset.blockId
+        target.dataset
+          .blockId
       );
 
 
@@ -2817,7 +2811,9 @@ canvas.addEventListener(
       sourceLoc.parentId !==
       targetLoc.parentId
     ) {
+
       return;
+
     }
 
 
@@ -2859,10 +2855,10 @@ canvas.addEventListener(
 );
 
 
+
 canvas.addEventListener(
   "dragend",
   () => {
-
 
     dragBlockId =
       null;
@@ -2874,18 +2870,16 @@ canvas.addEventListener(
       )
       .forEach(
         el =>
-          el.classList.remove(
-            "drag-over"
-          )
+          el.classList
+            .remove(
+              "drag-over"
+            )
       );
 
   }
 );
 
 
-/* =========================================================
-   INSERT BLOCK
-========================================================= */
 
 function insertBlock(
   parentId,
@@ -2899,13 +2893,19 @@ function insertBlock(
     );
 
 
-  if (!container) {
+  if (
+    !container
+  ) {
+
     return;
+
   }
 
 
   const block =
-    createBlock(type);
+    createBlock(
+      type
+    );
 
 
   if (
@@ -2913,11 +2913,13 @@ function insertBlock(
     "start"
   ) {
 
-    container.unshift(
-      block
-    );
+    container
+      .unshift(
+        block
+      );
 
-  } else {
+  }
+  else {
 
     const index =
       container
@@ -2932,17 +2934,20 @@ function insertBlock(
       index < 0
     ) {
 
-      container.push(
-        block
-      );
+      container
+        .push(
+          block
+        );
 
-    } else {
+    }
+    else {
 
-      container.splice(
-        index + 1,
-        0,
-        block
-      );
+      container
+        .splice(
+          index + 1,
+          0,
+          block
+        );
 
     }
 
@@ -2962,9 +2967,6 @@ function insertBlock(
 }
 
 
-/* =========================================================
-   LEFT ADD
-========================================================= */
 
 document
   .querySelectorAll(
@@ -2973,58 +2975,60 @@ document
   .forEach(
     button => {
 
+      button
+        .addEventListener(
+          "click",
+          () => {
 
-      button.addEventListener(
-        "click",
-        () => {
+            const selectedLoc =
+              findBlockLocation(
+                selectedId
+              );
 
 
-          const selectedLoc =
-            findBlockLocation(
-              selectedId
-            );
+            if (
+              selectedLoc
+            ) {
 
+              insertBlock(
 
-          if (selectedLoc) {
+                selectedLoc
+                  .parentId ||
+                "root",
 
-            insertBlock(
+                selectedId,
 
-              selectedLoc.parentId ||
-              "root",
+                button.dataset
+                  .add
 
-              selectedId,
+              );
 
-              button.dataset.add
+            }
+            else {
 
-            );
+              insertBlock(
 
-          } else {
+                "root",
 
-            insertBlock(
+                state.blocks
+                  .at(-1)
+                  ?.id ||
+                "start",
 
-              "root",
+                button.dataset
+                  .add
 
-              state.blocks
-                .at(-1)
-                ?.id ||
-              "start",
+              );
 
-              button.dataset.add
-
-            );
+            }
 
           }
-
-        }
-      );
+        );
 
     }
   );
 
 
-/* =========================================================
-   BLOCK ACTION
-========================================================= */
 
 function runBlockAction(
   action
@@ -3036,8 +3040,12 @@ function runBlockAction(
     );
 
 
-  if (!loc) {
+  if (
+    !loc
+  ) {
+
     return;
+
   }
 
 
@@ -3046,6 +3054,7 @@ function runBlockAction(
     index,
     block
   } = loc;
+
 
 
   if (
@@ -3063,6 +3072,7 @@ function runBlockAction(
     ];
 
   }
+
 
 
   if (
@@ -3083,6 +3093,7 @@ function runBlockAction(
   }
 
 
+
   if (
     action ===
     "duplicate"
@@ -3090,15 +3101,18 @@ function runBlockAction(
 
     const copy =
       refreshIds(
-        deepClone(block)
+        deepClone(
+          block
+        )
       );
 
 
-    container.splice(
-      index + 1,
-      0,
-      copy
-    );
+    container
+      .splice(
+        index + 1,
+        0,
+        copy
+      );
 
 
     selectedId =
@@ -3107,20 +3121,23 @@ function runBlockAction(
   }
 
 
+
   if (
     action ===
     "delete"
   ) {
 
-    container.splice(
-      index,
-      1
-    );
+    container
+      .splice(
+        index,
+        1
+      );
 
 
-    previewImages.delete(
-      block.id
-    );
+    previewImages
+      .delete(
+        block.id
+      );
 
 
     selectedId =
@@ -3140,9 +3157,6 @@ function runBlockAction(
 }
 
 
-/* =========================================================
-   INSPECTOR BASIC FIELD
-========================================================= */
 
 function contentFieldHTML(
   definition,
@@ -3222,9 +3236,6 @@ function contentFieldHTML(
 }
 
 
-/* =========================================================
-   COLOR
-========================================================= */
 
 function colorFieldHTML(
   label,
@@ -3234,7 +3245,9 @@ function colorFieldHTML(
 
   const safe =
     /^#[0-9a-f]{6}$/i
-      .test(value)
+      .test(
+        value
+      )
         ? value
         : "#000000";
 
@@ -3268,9 +3281,6 @@ function colorFieldHTML(
 }
 
 
-/* =========================================================
-   RANGE
-========================================================= */
 
 function rangeFieldHTML(
   label,
@@ -3311,6 +3321,7 @@ function rangeFieldHTML(
 }
 
 
+
 function rangeContentFieldHTML(
   label,
   key,
@@ -3349,9 +3360,6 @@ function rangeContentFieldHTML(
 }
 
 
-/* =========================================================
-   PROFILE INSPECTOR
-========================================================= */
 
 function profileEditorHTML(
   fields,
@@ -3479,7 +3487,8 @@ function profileEditorHTML(
                         value="full"
                         ${
                           !field.width ||
-                          field.width === "full"
+                          field.width ===
+                          "full"
                             ? "selected"
                             : ""
                         }
@@ -3504,9 +3513,6 @@ function profileEditorHTML(
 }
 
 
-/* =========================================================
-   INSPECTOR
-========================================================= */
 
 function renderInspector() {
 
@@ -3514,7 +3520,9 @@ function renderInspector() {
     getSelectedBlock();
 
 
-  if (!block) {
+  if (
+    !block
+  ) {
 
     inspector.hidden =
       true;
@@ -3555,7 +3563,6 @@ function renderInspector() {
       .join("");
 
 
-  /* IMAGE OPTIONS */
 
   if (
     block.type ===
@@ -3576,20 +3583,22 @@ function renderInspector() {
           data-inspector-image-pick="${block.id}"
         >
           ${
-            previewImages.has(
-              block.id
-            )
-              ? "画像を変更"
-              : "プレビュー画像を選ぶ"
+            previewImages
+              .has(
+                block.id
+              )
+                ? "画像を変更"
+                : "プレビュー画像を選ぶ"
           }
         </button>
 
 
         ${
-          previewImages.has(
-            block.id
-          )
-            ? `
+          previewImages
+            .has(
+              block.id
+            )
+              ? `
                 <button
                   type="button"
                   class="inspector-remove-image"
@@ -3598,7 +3607,7 @@ function renderInspector() {
                   プレビュー画像を削除
                 </button>
               `
-            : ""
+              : ""
         }
 
 
@@ -3687,7 +3696,8 @@ function renderInspector() {
         block.content
           .profileEnabled
             ? profileEditorHTML(
-                block.content.profileFields,
+                block.content
+                  .profileFields,
                 "embedded"
               )
             : ""
@@ -3698,7 +3708,6 @@ function renderInspector() {
   }
 
 
-  /* PROFILE */
 
   if (
     block.type ===
@@ -3707,14 +3716,14 @@ function renderInspector() {
 
     contentHTML +=
       profileEditorHTML(
-        block.content.fields,
+        block.content
+          .fields,
         "self"
       );
 
   }
 
 
-  /* TOGGLE */
 
   if (
     block.type ===
@@ -3758,8 +3767,7 @@ function renderInspector() {
   }
 
 
-  inspectorFields.innerHTML =
-    `
+  inspectorFields.innerHTML = `
 
       <div class="inspector-group">
 
@@ -3955,16 +3963,38 @@ function renderInspector() {
 
             ${
               [
-                ["none", "なし"],
-                ["glow", "Glow"],
-                ["neon", "Neon"],
-                ["glass", "Glass"],
-                ["outline", "Outline"],
-                ["soft", "Soft Shadow"]
+                [
+                  "none",
+                  "なし"
+                ],
+                [
+                  "glow",
+                  "Glow"
+                ],
+                [
+                  "neon",
+                  "Neon"
+                ],
+                [
+                  "glass",
+                  "Glass"
+                ],
+                [
+                  "outline",
+                  "Outline"
+                ],
+                [
+                  "soft",
+                  "Soft Shadow"
+                ]
               ]
-
                 .map(
-                  ([value, label]) =>
+                  (
+                    [
+                      value,
+                      label
+                    ]
+                  ) =>
                     `
                       <option
                         value="${value}"
@@ -3980,7 +4010,6 @@ function renderInspector() {
                       </option>
                     `
                 )
-
                 .join("")
             }
 
@@ -4001,15 +4030,34 @@ function renderInspector() {
 
             ${
               [
-                ["none", "なし"],
-                ["fade", "Fade"],
-                ["slide", "Slide Up"],
-                ["pulse", "Pulse"],
-                ["flicker", "Flicker"]
+                [
+                  "none",
+                  "なし"
+                ],
+                [
+                  "fade",
+                  "Fade"
+                ],
+                [
+                  "slide",
+                  "Slide Up"
+                ],
+                [
+                  "pulse",
+                  "Pulse"
+                ],
+                [
+                  "flicker",
+                  "Flicker"
+                ]
               ]
-
                 .map(
-                  ([value, label]) =>
+                  (
+                    [
+                      value,
+                      label
+                    ]
+                  ) =>
                     `
                       <option
                         value="${value}"
@@ -4025,7 +4073,6 @@ function renderInspector() {
                       </option>
                     `
                 )
-
                 .join("")
             }
 
@@ -4040,23 +4087,22 @@ function renderInspector() {
 }
 
 
-/* =========================================================
-   INSPECTOR BUTTONS
-========================================================= */
 
 inspectorFields
   .addEventListener(
     "click",
     event => {
 
-
       const pick =
-        event.target.closest(
-          "[data-inspector-image-pick]"
-        );
+        event.target
+          .closest(
+            "[data-inspector-image-pick]"
+          );
 
 
-      if (pick) {
+      if (
+        pick
+      ) {
 
         imageUploadTargetId =
           pick.dataset
@@ -4066,24 +4112,27 @@ inspectorFields
         previewFileInput
           ?.click();
 
-
         return;
 
       }
 
 
       const remove =
-        event.target.closest(
-          "[data-remove-preview]"
-        );
+        event.target
+          .closest(
+            "[data-remove-preview]"
+          );
 
 
-      if (remove) {
+      if (
+        remove
+      ) {
 
-        previewImages.delete(
-          remove.dataset
-            .removePreview
-        );
+        previewImages
+          .delete(
+            remove.dataset
+              .removePreview
+          );
 
 
         renderCanvas();
@@ -4096,9 +4145,6 @@ inspectorFields
   );
 
 
-/* =========================================================
-   INSPECTOR CHANGES
-========================================================= */
 
 function handleInspectorChange(
   event
@@ -4108,8 +4154,12 @@ function handleInspectorChange(
     getSelectedBlock();
 
 
-  if (!block) {
+  if (
+    !block
+  ) {
+
     return;
+
   }
 
 
@@ -4117,30 +4167,27 @@ function handleInspectorChange(
     event.target.dataset
       .contentKey;
 
-
   const contentNumber =
     event.target.dataset
       .contentNumber;
-
 
   const contentCheckbox =
     event.target.dataset
       .contentCheckbox;
 
-
   const styleKey =
     event.target.dataset
       .styleKey;
-
 
   const effectKey =
     event.target.dataset
       .effectKey;
 
 
-  /* CONTENT */
 
-  if (contentKey) {
+  if (
+    contentKey
+  ) {
 
     if (
       event.target.dataset
@@ -4152,17 +4199,17 @@ function handleInspectorChange(
         contentKey
       ] =
         event.target.value
-
           .split(",")
-
           .map(
             value =>
               value.trim()
           )
+          .filter(
+            Boolean
+          );
 
-          .filter(Boolean);
-
-    } else {
+    }
+    else {
 
       block.content[
         contentKey
@@ -4174,9 +4221,10 @@ function handleInspectorChange(
   }
 
 
-  /* NUMBER */
 
-  if (contentNumber) {
+  if (
+    contentNumber
+  ) {
 
     block.content[
       contentNumber
@@ -4188,9 +4236,10 @@ function handleInspectorChange(
   }
 
 
-  /* CHECKBOX */
 
-  if (contentCheckbox) {
+  if (
+    contentCheckbox
+  ) {
 
     block.content[
       contentCheckbox
@@ -4200,9 +4249,10 @@ function handleInspectorChange(
   }
 
 
-  /* STYLE */
 
-  if (styleKey) {
+  if (
+    styleKey
+  ) {
 
     block.style[
       styleKey
@@ -4217,9 +4267,10 @@ function handleInspectorChange(
   }
 
 
-  /* EFFECT */
 
-  if (effectKey) {
+  if (
+    effectKey
+  ) {
 
     block.effect[
       effectKey
@@ -4229,21 +4280,19 @@ function handleInspectorChange(
   }
 
 
-  /* PROFILE */
 
   const profileSource =
     event.target.dataset
       .profileSource;
 
-
   const profileId =
     event.target.dataset
       .profileId;
 
-
   const profileProp =
     event.target.dataset
       .profileProp;
+
 
 
   if (
@@ -4262,59 +4311,66 @@ function handleInspectorChange(
 
 
     const field =
-      fields?.find(
-        item =>
-          item.id ===
-          profileId
-      );
+      fields
+        ?.find(
+          item =>
+            item.id ===
+            profileId
+        );
 
 
-    if (field) {
+    if (
+      field
+    ) {
 
       field[
         profileProp
       ] =
         profileProp ===
         "enabled"
-          ? event.target.checked
-          : event.target.value;
+          ? event.target
+              .checked
+          : event.target
+              .value;
 
     }
 
   }
 
 
-  /* PROFILE COLUMNS */
 
-const profileColumns =
-  event.target.dataset
-    .profileColumns;
+  const profileColumns =
+    event.target.dataset
+      .profileColumns;
 
-
-if (profileColumns) {
 
   if (
-    profileColumns ===
-    "embedded"
+    profileColumns
   ) {
 
-    block.content
-      .profileColumns =
-      Number(
-        event.target.value
-      );
+    if (
+      profileColumns ===
+      "embedded"
+    ) {
 
-  } else {
+      block.content
+        .profileColumns =
+        Number(
+          event.target.value
+        );
 
-    block.content
-      .columns =
-      Number(
-        event.target.value
-      );
+    }
+    else {
+
+      block.content
+        .columns =
+        Number(
+          event.target.value
+        );
+
+    }
 
   }
-
-}
 
 
   renderCanvas();
@@ -4326,11 +4382,13 @@ if (profileColumns) {
 }
 
 
+
 inspectorFields
   .addEventListener(
     "input",
     handleInspectorChange
   );
+
 
 
 inspectorFields
@@ -4348,9 +4406,6 @@ inspectorFields
   );
 
 
-/* =========================================================
-   RIGHT BLOCK ACTIONS
-========================================================= */
 
 document
   .querySelectorAll(
@@ -4359,25 +4414,23 @@ document
   .forEach(
     button => {
 
-      button.addEventListener(
-        "click",
-        () => {
+      button
+        .addEventListener(
+          "click",
+          () => {
 
-          runBlockAction(
-            button.dataset
-              .blockAction
-          );
+            runBlockAction(
+              button.dataset
+                .blockAction
+            );
 
-        }
-      );
+          }
+        );
 
     }
   );
 
 
-/* =========================================================
-   THEMES
-========================================================= */
 
 document
   .querySelectorAll(
@@ -4386,20 +4439,22 @@ document
   .forEach(
     button => {
 
-      button.addEventListener(
-        "click",
-        () => {
+      button
+        .addEventListener(
+          "click",
+          () => {
 
-          applyTheme(
-            button.dataset
-              .theme
-          );
+            applyTheme(
+              button.dataset
+                .theme
+            );
 
-        }
-      );
+          }
+        );
 
     }
   );
+
 
 
 function applyTheme(
@@ -4411,7 +4466,9 @@ function applyTheme(
       themeName
     ]
   ) {
+
     return;
+
   }
 
 
@@ -4423,87 +4480,91 @@ function applyTheme(
     getTheme();
 
 
-  function apply(blocks) {
 
-    blocks.forEach(
-      block => {
+  function apply(
+    blocks
+  ) {
 
+    blocks
+      .forEach(
+        block => {
 
-        block.style
-          .textColor =
-          theme.text;
+          block.style
+            .textColor =
+            theme.text;
 
-
-        block.style
-          .backgroundColor =
-          (
-            block.type ===
-            "card" ||
-            block.type ===
-            "profile" ||
-            block.type ===
-            "toggle"
-          )
-            ? theme.surface
-            : theme.background;
-
-
-        block.style
-          .accentColor =
-          theme.accent;
-
-
-        block.style
-          .borderColor =
-          theme.border;
-
-
-        block.style
-          .glowColor =
-          theme.glow;
-
-
-        if (
-          [
-            "tags",
-            "divider"
-          ].includes(
-            block.type
-          )
-        ) {
 
           block.style
             .backgroundColor =
-            "transparent";
+            (
+              block.type ===
+              "card" ||
+              block.type ===
+              "profile" ||
+              block.type ===
+              "toggle"
+            )
+              ? theme.surface
+              : theme.background;
 
-        }
-
-
-        if (
-          block.type ===
-          "button"
-        ) {
 
           block.style
-            .backgroundColor =
+            .accentColor =
             theme.accent;
 
-        }
+
+          block.style
+            .borderColor =
+            theme.border;
 
 
-        if (
-          block.children
-            ?.length
-        ) {
+          block.style
+            .glowColor =
+            theme.glow;
 
-          apply(
+
+          if (
+            [
+              "tags",
+              "divider"
+            ]
+              .includes(
+                block.type
+              )
+          ) {
+
+            block.style
+              .backgroundColor =
+              "transparent";
+
+          }
+
+
+          if (
+            block.type ===
+            "button"
+          ) {
+
+            block.style
+              .backgroundColor =
+              theme.accent;
+
+          }
+
+
+          if (
             block.children
-          );
+              ?.length
+          ) {
+
+            apply(
+              block.children
+            );
+
+          }
 
         }
-
-      }
-    );
+      );
 
   }
 
@@ -4520,6 +4581,7 @@ function applyTheme(
 }
 
 
+
 function updateThemeButtons() {
 
   document
@@ -4531,10 +4593,13 @@ function updateThemeButtons() {
 
         button.classList
           .toggle(
+
             "active",
+
             button.dataset
               .theme ===
             state.theme
+
           );
 
       }
@@ -4553,9 +4618,6 @@ function updateThemeButtons() {
 }
 
 
-/* =========================================================
-   EXPORT BASE
-========================================================= */
 
 function exportBaseStyle(
   block
@@ -4567,21 +4629,21 @@ function exportBaseStyle(
 
   const parts = [
 
-  `color:${s.textColor}`,
+    `color:${s.textColor}`,
 
-  `background:${s.backgroundColor}`,
+    `background:${s.backgroundColor}`,
 
-  `border:${s.borderWidth}px solid ${s.borderColor}`,
+    `border:${s.borderWidth}px solid ${s.borderColor}`,
 
-  `border-radius:${s.radius}px`,
+    `border-radius:${s.radius}px`,
 
-  `padding:${s.padding}px`,
+    `padding:${s.padding}px`,
 
-  `margin:0 0 16px 0`,
+    `margin:0 0 16px 0`,
 
-  `text-align:${s.align}`,
+    `text-align:${s.align}`,
 
-  `font-size:${s.fontSize}px`
+    `font-size:${s.fontSize}px`
 
   ];
 
@@ -4590,10 +4652,11 @@ function exportBaseStyle(
     [
       "glow",
       "neon"
-    ].includes(
-      block.effect
-        .preset
-    )
+    ]
+      .includes(
+        block.effect
+          .preset
+      )
   ) {
 
     parts.push(
@@ -4611,9 +4674,6 @@ function exportBaseStyle(
 }
 
 
-/* =========================================================
-   EXPORT PROFILE
-========================================================= */
 
 function exportProfileHTML(
   fields,
@@ -4631,7 +4691,9 @@ function exportProfileHTML(
   if (
     !enabled.length
   ) {
+
     return "";
+
   }
 
 
@@ -4648,39 +4710,52 @@ function exportProfileHTML(
         ) {
 
           case "third":
-            width = "31%";
+
+            width =
+              "31%";
+
             break;
+
 
           case "half":
-            width = "48%";
+
+            width =
+              "48%";
+
             break;
+
 
           case "twoThirds":
-            width = "64%";
+
+            width =
+              "64%";
+
             break;
 
+
           case "full":
+
           default:
-            width = "100%";
+
+            width =
+              "100%";
+
             break;
+
         }
 
 
         const marginRight =
-          width === "100%"
+          width ===
+          "100%"
             ? "0"
             : "1%";
 
 
         return `
 <div style="display:inline-block;width:${width};box-sizing:border-box;vertical-align:top;margin:0 ${marginRight} 12px 0;padding:10px 12px;border:1px solid ${style.borderColor};border-radius:8px;background:${style.backgroundColor};text-align:left;">
-  <div style="color:${style.accentColor};font-size:9px;font-weight:bold;letter-spacing:.12em;line-height:1.4;">
-    ${escapeHTML(field.label)}
-  </div>
-
-  <div style="margin-top:5px;color:${style.textColor};font-size:14px;line-height:1.6;">
-    ${lineBreaks(field.value)}
-  </div>
+  <div style="color:${style.accentColor};font-size:9px;font-weight:bold;letter-spacing:.12em;line-height:1.4;">${escapeHTML(field.label)}</div>
+  <div style="margin-top:5px;color:${style.textColor};font-size:14px;line-height:1.6;">${lineBreaks(field.value)}</div>
 </div>
         `.trim();
 
@@ -4691,9 +4766,6 @@ function exportProfileHTML(
 }
 
 
-/* =========================================================
-   EXPORT BLOCK
-========================================================= */
 
 function exportBlockHTML(
   block
@@ -4702,10 +4774,8 @@ function exportBlockHTML(
   const s =
     block.style;
 
-
   const c =
     block.content;
-
 
   const base =
     exportBaseStyle(
@@ -4717,10 +4787,10 @@ function exportBlockHTML(
     (
       block.effect
         .preset ===
-      "neon" ||
+        "neon" ||
       block.effect
         .preset ===
-      "glow"
+        "glow"
     )
       ? `text-shadow:0 0 ${s.glowSize}px ${s.glowColor};`
       : "";
@@ -4735,68 +4805,48 @@ function exportBlockHTML(
 
       return `
 <div style="${base}">
-  <div style="color:${s.accentColor};font-size:11px;font-weight:bold;letter-spacing:.16em;">
-    ${escapeHTML(c.kicker)}
-  </div>
-  <div style="margin-top:10px;font-size:${s.fontSize}px;font-weight:bold;letter-spacing:${s.letterSpacing}px;${titleShadow}">
-    ${escapeHTML(c.title)}
-  </div>
-  <div style="margin-top:8px;font-size:13px;opacity:.75;">
-    ${escapeHTML(c.subtitle)}
-  </div>
+  <div style="color:${s.accentColor};font-size:11px;font-weight:bold;letter-spacing:.16em;">${escapeHTML(c.kicker)}</div>
+  <div style="margin-top:10px;font-size:${s.fontSize}px;font-weight:bold;letter-spacing:${s.letterSpacing}px;${titleShadow}">${escapeHTML(c.title)}</div>
+  <div style="margin-top:8px;font-size:13px;opacity:.75;">${escapeHTML(c.subtitle)}</div>
 </div>
       `.trim();
+
 
 
     case "messageBox":
 
       return `
 <div style="${base}">
-  <div style="color:${s.accentColor};font-size:10px;font-weight:bold;letter-spacing:.14em;">
-    ${escapeHTML(c.kicker)}
-  </div>
-<div style="margin-top:10px;font-size:16px;line-height:1.7;">
-  ${lineBreaks(c.body)}
-</div>
-<div style="margin-top:10px;color:${s.accentColor};font-size:12px;text-align:right;">
-  ${escapeHTML(c.footer)}
-</div>
+  <div style="color:${s.accentColor};font-size:10px;font-weight:bold;letter-spacing:.14em;">${escapeHTML(c.kicker)}</div>
+  <div style="margin-top:10px;font-size:16px;line-height:1.7;">${lineBreaks(c.body)}</div>
+  <div style="margin-top:10px;color:${s.accentColor};font-size:12px;text-align:right;">${escapeHTML(c.footer)}</div>
 </div>
       `.trim();
+
 
 
     case "sectionText":
 
       return `
 <div style="${base}">
-  <div style="color:${s.accentColor};font-size:10px;font-weight:bold;letter-spacing:.14em;">
-    ${escapeHTML(c.kicker)}
-  </div>
-<div style="margin-top:6px;font-size:${s.fontSize}px;font-weight:bold;${titleShadow}">
-  ${escapeHTML(c.heading)}
-</div>
-<div style="margin-top:8px;font-size:16px;line-height:1.7;">
-  ${lineBreaks(c.body)}
-</div>
+  <div style="color:${s.accentColor};font-size:10px;font-weight:bold;letter-spacing:.14em;">${escapeHTML(c.kicker)}</div>
+  <div style="margin-top:6px;font-size:${s.fontSize}px;font-weight:bold;${titleShadow}">${escapeHTML(c.heading)}</div>
+  <div style="margin-top:8px;font-size:16px;line-height:1.7;">${lineBreaks(c.body)}</div>
 </div>
       `.trim();
+
 
 
     case "card":
 
       return `
 <div style="${base}">
-  <div style="color:${s.accentColor};font-size:10px;font-weight:bold;letter-spacing:.14em;">
-    ${escapeHTML(c.kicker)}
-  </div>
-<div style="margin-top:6px;font-size:${s.fontSize}px;font-weight:bold;">
-  ${escapeHTML(c.heading)}
-</div>
-<div style="margin-top:8px;font-size:16px;line-height:1.7;">
-  ${lineBreaks(c.body)}
-</div>
+  <div style="color:${s.accentColor};font-size:10px;font-weight:bold;letter-spacing:.14em;">${escapeHTML(c.kicker)}</div>
+  <div style="margin-top:6px;font-size:${s.fontSize}px;font-weight:bold;">${escapeHTML(c.heading)}</div>
+  <div style="margin-top:8px;font-size:16px;line-height:1.7;">${lineBreaks(c.body)}</div>
 </div>
       `.trim();
+
 
 
     case "image":
@@ -4805,9 +4855,7 @@ function exportBlockHTML(
 <div style="${base}">
   {{img:${cleanImageKey(c.imageKey)}}}
 
-  <div style="margin-top:8px;font-size:11px;opacity:.7;">
-    ${escapeHTML(c.caption)}
-  </div>
+  <div style="margin-top:8px;font-size:11px;opacity:.7;">${escapeHTML(c.caption)}</div>
 
   ${
     c.profileEnabled
@@ -4826,36 +4874,33 @@ function exportBlockHTML(
       `.trim();
 
 
+
     case "profile":
 
       return `
 <div style="${base}">
 
-  <div style="color:${s.accentColor};font-size:10px;font-weight:bold;letter-spacing:.14em;margin-bottom:12px;">
-    ${escapeHTML(c.heading)}
-  </div>
+  <div style="color:${s.accentColor};font-size:10px;font-weight:bold;letter-spacing:.14em;margin-bottom:12px;">${escapeHTML(c.heading)}</div>
 
-    ${exportProfileHTML(
-      c.fields,
-      s
-    )}
+  ${exportProfileHTML(
+    c.fields,
+    s
+  )}
 
 </div>
       `.trim();
+
 
 
     case "notice":
 
       return `
 <div style="${base}">
-  <div style="color:${s.accentColor};font-size:10px;font-weight:bold;">
-    ${escapeHTML(c.heading)}
-  </div>
-  <div style="margin-top:8px;font-size:13px;line-height:1.8;">
-    ${lineBreaks(c.body)}
-  </div>
+  <div style="color:${s.accentColor};font-size:10px;font-weight:bold;">${escapeHTML(c.heading)}</div>
+  <div style="margin-top:8px;font-size:13px;line-height:1.8;">${lineBreaks(c.body)}</div>
 </div>
       `.trim();
+
 
 
     case "tags":
@@ -4866,14 +4911,13 @@ function exportBlockHTML(
     .map(
       tag =>
         `
-          <span style="display:inline-block;margin:3px;padding:5px 9px;border:1px solid ${s.borderColor};border-radius:999px;color:${s.accentColor};font-size:11px;">
-            #${escapeHTML(tag)}
-          </span>
+          <span style="display:inline-block;margin:3px;padding:5px 9px;border:1px solid ${s.borderColor};border-radius:999px;color:${s.accentColor};font-size:11px;">#${escapeHTML(tag)}</span>
         `
     )
     .join("")}
 </div>
       `.trim();
+
 
 
     case "divider":
@@ -4889,6 +4933,7 @@ function exportBlockHTML(
       `.trim();
 
 
+
     case "button":
 
       return `
@@ -4896,6 +4941,7 @@ function exportBlockHTML(
   ${escapeHTML(c.label)}
 </div>
       `.trim();
+
 
 
     case "toggle":
@@ -4908,8 +4954,12 @@ function exportBlockHTML(
           .map(
             exportBlockHTML
           )
-          .filter(Boolean)
-          .join("\n");
+          .filter(
+            Boolean
+          )
+          .join(
+            "\n"
+          );
 
 
       return `
@@ -4922,9 +4972,7 @@ function exportBlockHTML(
   style="${base}"
 >
 
-  <summary style="cursor:pointer;font-weight:bold;color:${s.accentColor};">
-    ${escapeHTML(c.summary)}
-  </summary>
+  <summary style="cursor:pointer;font-weight:bold;color:${s.accentColor};">${escapeHTML(c.summary)}</summary>
 
   <div style="margin-top:14px;">
     ${children}
@@ -4941,21 +4989,17 @@ function exportBlockHTML(
 }
 
 
-/* =========================================================
-   OUTPUT
-========================================================= */
 
 function generateOutput() {
 
   const output =
     state.blocks
-
       .map(
         exportBlockHTML
       )
-
-      .filter(Boolean)
-
+      .filter(
+        Boolean
+      )
       .join(
         "\n\n"
       );
@@ -4970,6 +5014,7 @@ function generateOutput() {
   );
 
 }
+
 
 
 function updateCounter(
@@ -4991,10 +5036,11 @@ function updateCounter(
       : `${Math.abs(rest).toLocaleString()}文字オーバー`;
 
 
-  counter.classList.remove(
-    "warning",
-    "danger"
-  );
+  counter.classList
+    .remove(
+      "warning",
+      "danger"
+    );
 
 
   if (
@@ -5002,18 +5048,21 @@ function updateCounter(
     MAX_CHARACTERS
   ) {
 
-    counter.classList.add(
-      "danger"
-    );
+    counter.classList
+      .add(
+        "danger"
+      );
 
-  } else if (
+  }
+  else if (
     length >=
     8500
   ) {
 
-    counter.classList.add(
-      "warning"
-    );
+    counter.classList
+      .add(
+        "warning"
+      );
 
   }
 
@@ -5030,62 +5079,66 @@ function updateCounter(
 }
 
 
-/* =========================================================
-   COPY
-========================================================= */
 
-copyButton.addEventListener(
-  "click",
-  async () => {
+copyButton
+  .addEventListener(
+    "click",
+    async () => {
 
-
-    const text =
-      htmlOutput.value;
+      const text =
+        htmlOutput.value;
 
 
-    if (!text) {
-      return;
+      if (
+        !text
+      ) {
+
+        return;
+
+      }
+
+
+      try {
+
+        await navigator
+          .clipboard
+          .writeText(
+            text
+          );
+
+
+        copyButton.textContent =
+          "コピーしました ✓";
+
+
+        setTimeout(
+          () => {
+
+            copyButton.textContent =
+              "HTMLをコピー";
+
+          },
+          1300
+        );
+
+      }
+      catch {
+
+        htmlOutput
+          .select();
+
+
+        document
+          .execCommand(
+            "copy"
+          );
+
+      }
+
     }
+  );
 
 
-    try {
-
-      await navigator
-        .clipboard
-        .writeText(text);
-
-
-      copyButton.textContent =
-        "コピーしました ✓";
-
-
-      setTimeout(
-        () => {
-
-          copyButton.textContent =
-            "HTMLをコピー";
-
-        },
-        1300
-      );
-
-    } catch {
-
-      htmlOutput.select();
-
-      document.execCommand(
-        "copy"
-      );
-
-    }
-
-  }
-);
-
-
-/* =========================================================
-   MODE
-========================================================= */
 
 document
   .getElementById(
@@ -5105,6 +5158,7 @@ document
 
     }
   );
+
 
 
 document
@@ -5133,13 +5187,15 @@ document
   );
 
 
+
 function updateModeButtons() {
 
   document
     .getElementById(
       "editModeButton"
     )
-    .classList.toggle(
+    .classList
+    .toggle(
       "active",
       state.uiMode ===
       "edit"
@@ -5150,7 +5206,8 @@ function updateModeButtons() {
     .getElementById(
       "previewModeButton"
     )
-    .classList.toggle(
+    .classList
+    .toggle(
       "active",
       state.uiMode ===
       "preview"
@@ -5159,9 +5216,6 @@ function updateModeButtons() {
 }
 
 
-/* =========================================================
-   REPLAY
-========================================================= */
 
 document
   .getElementById(
@@ -5173,9 +5227,6 @@ document
   );
 
 
-/* =========================================================
-   RESET
-========================================================= */
 
 document
   .getElementById(
@@ -5185,22 +5236,25 @@ document
     "click",
     () => {
 
-
       if (
         !confirm(
           "編集内容をすべて初期状態に戻しますか？"
         )
       ) {
+
         return;
+
       }
 
 
-      localStorage.removeItem(
-        STORAGE_KEY
-      );
+      localStorage
+        .removeItem(
+          STORAGE_KEY
+        );
 
 
-      previewImages.clear();
+      previewImages
+        .clear();
 
 
       state = {
@@ -5211,7 +5265,8 @@ document
         uiMode:
           "edit",
 
-        blocks: []
+        blocks:
+          []
 
       };
 
@@ -5230,9 +5285,6 @@ document
   );
 
 
-/* =========================================================
-   RENDER ALL
-========================================================= */
 
 function renderAll() {
 
@@ -5251,9 +5303,6 @@ function renderAll() {
 }
 
 
-/* =========================================================
-   INITIAL BLOCKS
-========================================================= */
 
 function createInitialBlocks() {
 
@@ -5272,9 +5321,6 @@ function createInitialBlocks() {
 }
 
 
-/* =========================================================
-   INIT
-========================================================= */
 
 function init() {
 
@@ -5301,6 +5347,7 @@ function init() {
   generateOutput();
 
 }
+
 
 
 init();
