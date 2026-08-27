@@ -4636,7 +4636,6 @@ function exportProfileHTML(
 
 
   return enabled
-
     .map(
       field => {
 
@@ -4664,7 +4663,6 @@ function exportProfileHTML(
           default:
             width = "100%";
             break;
-
         }
 
 
@@ -4675,11 +4673,12 @@ function exportProfileHTML(
 
 
         return `
-<div style="display:inline-block;width:${width};vertical-align:top;margin:0 ${marginRight} 12px 0;">
-  <div style="color:${style.accentColor};font-size:9px;letter-spacing:.12em;">
+<div style="display:inline-block;width:${width};box-sizing:border-box;vertical-align:top;margin:0 ${marginRight} 12px 0;padding:10px 12px;border:1px solid ${style.borderColor};border-radius:8px;background:${style.backgroundColor};text-align:left;">
+  <div style="color:${style.accentColor};font-size:9px;font-weight:bold;letter-spacing:.12em;line-height:1.4;">
     ${escapeHTML(field.label)}
   </div>
-  <div style="margin-top:4px;line-height:1.6;">
+
+  <div style="margin-top:5px;color:${style.textColor};font-size:14px;line-height:1.6;">
     ${lineBreaks(field.value)}
   </div>
 </div>
@@ -4687,7 +4686,6 @@ function exportProfileHTML(
 
       }
     )
-
     .join("");
 
 }
