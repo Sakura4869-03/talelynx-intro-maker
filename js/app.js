@@ -651,7 +651,7 @@ function createBaseBlock(type) {
         theme.glow,
 
       fontSize:
-        34,
+        16,
 
       padding:
         24,
@@ -725,7 +725,7 @@ function createBlock(type) {
 
 
       block.style.fontSize =
-        48;
+        32;
 
 
       block.style.padding =
@@ -755,7 +755,7 @@ function createBlock(type) {
 
 
       block.style.padding =
-        28;
+        16;
 
 
       block.effect.preset =
@@ -781,7 +781,7 @@ function createBlock(type) {
 
 
       block.style.fontSize =
-        26;
+        20;
 
       break;
 
@@ -808,7 +808,7 @@ function createBlock(type) {
 
 
       block.style.fontSize =
-        24;
+        18;
 
       break;
 
@@ -870,7 +870,7 @@ function createBlock(type) {
 
 
       block.style.fontSize =
-        22;
+        16;
 
       break;
 
@@ -889,7 +889,7 @@ function createBlock(type) {
 
 
       block.style.fontSize =
-        20;
+        14;
 
       break;
 
@@ -4755,12 +4755,12 @@ function exportBlockHTML(
   <div style="color:${s.accentColor};font-size:10px;font-weight:bold;letter-spacing:.14em;">
     ${escapeHTML(c.kicker)}
   </div>
-  <div style="margin-top:24px;line-height:1.9;">
-    ${lineBreaks(c.body)}
-  </div>
-  <div style="margin-top:20px;color:${s.accentColor};font-size:9px;text-align:right;">
-    ${escapeHTML(c.footer)}
-  </div>
+<div style="margin-top:10px;font-size:16px;line-height:1.7;">
+  ${lineBreaks(c.body)}
+</div>
+<div style="margin-top:10px;color:${s.accentColor};font-size:12px;text-align:right;">
+  ${escapeHTML(c.footer)}
+</div>
 </div>
       `.trim();
 
@@ -4772,12 +4772,12 @@ function exportBlockHTML(
   <div style="color:${s.accentColor};font-size:10px;font-weight:bold;letter-spacing:.14em;">
     ${escapeHTML(c.kicker)}
   </div>
-  <div style="margin-top:8px;font-size:${s.fontSize}px;font-weight:bold;${titleShadow}">
-    ${escapeHTML(c.heading)}
-  </div>
-  <div style="margin-top:12px;font-size:14px;line-height:1.9;">
-    ${lineBreaks(c.body)}
-  </div>
+<div style="margin-top:6px;font-size:${s.fontSize}px;font-weight:bold;${titleShadow}">
+  ${escapeHTML(c.heading)}
+</div>
+<div style="margin-top:8px;font-size:16px;line-height:1.7;">
+  ${lineBreaks(c.body)}
+</div>
 </div>
       `.trim();
 
@@ -4789,12 +4789,12 @@ function exportBlockHTML(
   <div style="color:${s.accentColor};font-size:10px;font-weight:bold;letter-spacing:.14em;">
     ${escapeHTML(c.kicker)}
   </div>
-  <div style="margin-top:8px;font-size:${s.fontSize}px;font-weight:bold;">
-    ${escapeHTML(c.heading)}
-  </div>
-  <div style="margin-top:12px;font-size:14px;line-height:1.8;">
-    ${lineBreaks(c.body)}
-  </div>
+<div style="margin-top:6px;font-size:${s.fontSize}px;font-weight:bold;">
+  ${escapeHTML(c.heading)}
+</div>
+<div style="margin-top:8px;font-size:16px;line-height:1.7;">
+  ${lineBreaks(c.body)}
+</div>
 </div>
       `.trim();
 
